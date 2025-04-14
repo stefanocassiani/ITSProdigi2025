@@ -17,20 +17,24 @@ internal class Program
             // leggo la richiesta
             HttpListenerRequest cassa = chiamata.Request;
             Console.WriteLine($"Chiamata in ingresso per {cassa.RawUrl}");
-            // ne prendo il microsofono per parlare
-            HttpListenerResponse microfono = chiamata.Response;
             // decido cosa dire
             // capendo se il file esiste
             string nomeFile = rootFolder + cassa.RawUrl.Replace("/", "\\");
-            string rispostaStandard = $"Hai chiesto di vedere il file {nomeFile}";
+            string risposta = "";
             if (File.Exists(nomeFile))
             {
                 // e se esiste caricando il suo contenuto nella risposta da inviare
-                rispostaStandard = File.ReadAllText(nomeFile);
-            }            
-            // lo converto in impulsi
-            byte[] impulsi = System.Text.Encoding.UTF8.GetBytes(rispostaStandard);
+                risposta = File.ReadAllText(nomeFile);
+            } else
+            {
+                // se non esiste lo avviso
+                risposta = $"Il file {nomeFile} non esiste";
+            }
+                // lo converto in impulsi
+                byte[] impulsi = System.Text.Encoding.UTF8.GetBytes(risposta);
             Console.WriteLine("messaggio convertito in impulsi");
+            // prendo il microsofono per parlare
+            HttpListenerResponse microfono = chiamata.Response;
             // e lo spedisco al mio interlocutore
             microfono.OutputStream.Write(impulsi, 0, impulsi.Length);
             // prima di riagganciare il telefono
