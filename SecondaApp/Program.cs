@@ -19,16 +19,44 @@ internal class Program
             Console.WriteLine($"Chiamata in ingresso per {cassa.RawUrl}");
             // decido cosa dire
             // capendo se il file esiste
-            string nomeFile = rootFolder + cassa.RawUrl.Replace("/", "\\");
+            string pathLocale = rootFolder + cassa.RawUrl.Replace("/", "\\");
             string risposta = "";
-            if (File.Exists(nomeFile))
+            if (File.Exists(pathLocale))
             {
                 // e se esiste caricando il suo contenuto nella risposta da inviare
-                risposta = File.ReadAllText(nomeFile);
+                risposta = File.ReadAllText(pathLocale);
             } else
             {
-                // se non esiste lo avviso
-                risposta = $"Il file {nomeFile} non esiste";
+                if (pathLocale.EndsWith(".css"))
+                {
+                    risposta = @"body { 
+                                    background-color: #eeeeee;
+                                    font-family: sans-serif;
+                                }
+                                ";
+                } else if (pathLocale.EndsWith("\\") && Directory.Exists(pathLocale))
+                {
+                    string[] files = Directory.GetFiles(pathLocale);
+                    string links = "";
+                    foreach(string file in files)
+                    {
+                        string url = file.Replace(pathLocale, "");
+                        links += $"<li><a href='{url}'>{url}</a></li>"; 
+                    }
+                    risposta = @$"<html>
+                                    <head>
+                                        <link rel=""stylesheet"" type=""text/css"" href=""stile.css"">
+                                    </head>
+                                    <body>
+                                        <h1>{cassa.RawUrl}</h1>
+                                        <ul>{links}</ul>
+                                    </body>
+                                </html>";
+                } else
+                {
+                    // se non esiste lo avviso
+                    risposta = $"Il file {pathLocale} non esiste";
+                }
             }
             // lo converto in impulsi
             byte[] impulsi = System.Text.Encoding.UTF8.GetBytes(risposta);
