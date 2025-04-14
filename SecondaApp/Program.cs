@@ -30,11 +30,12 @@ internal class Program
                 // se non esiste lo avviso
                 risposta = $"Il file {nomeFile} non esiste";
             }
-                // lo converto in impulsi
-                byte[] impulsi = System.Text.Encoding.UTF8.GetBytes(risposta);
+            // lo converto in impulsi
+            byte[] impulsi = System.Text.Encoding.UTF8.GetBytes(risposta);
             Console.WriteLine("messaggio convertito in impulsi");
             // prendo il microsofono per parlare
             HttpListenerResponse microfono = chiamata.Response;
+            microfono.ContentType = "text/html";
             // e lo spedisco al mio interlocutore
             microfono.OutputStream.Write(impulsi, 0, impulsi.Length);
             // prima di riagganciare il telefono
