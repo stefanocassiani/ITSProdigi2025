@@ -1,0 +1,40 @@
+﻿@page "/tabelline"
+
+<h3>Tabelline</h3>
+
+<div class="row">
+    
+    <div class="col-md-6">
+        <input type="number" class="form-control" @bind="numeroBase" />
+    </div>
+    <div class="col-md-6">
+        <input type="number" class="form-control" @bind="ripetizioni" />
+    </div>
+
+
+
+    <div class="col-md-12">
+        @Calcola()
+    </div>
+</div>
+
+@code {
+    string numeroBase = "2";
+    string ripetizioni = "10";
+    string risultato = "";
+
+    MarkupString Calcola()
+    {
+        risultato = "";
+        int intBase = int.Parse(numeroBase);
+        int intRipetizioni = int.Parse(ripetizioni);
+
+        for(int n=0; n < intRipetizioni; n++)
+        {
+            int moltiplicazione = intBase * n;
+            risultato += $"{intBase} X {n} = {moltiplicazione}<br>";
+        }
+        return new MarkupString(risultato);
+    }
+
+}

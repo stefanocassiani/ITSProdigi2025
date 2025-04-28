@@ -1,4 +1,5 @@
 ﻿using System.Net;
+using System.Net.Mail;
 
 internal class Program
 {
@@ -6,8 +7,13 @@ internal class Program
     {
         string rootFolder = "C:\\testITS";
 
+        //SmtpClient client = new SmtpClient("smtp.gmail.com", 587);
+        //MailMessage messaggio = new MailMessage("io@posta.it", "tu@posta.it", "messaggio", "corpo");
+        //client.Send( messaggio );
+
         HttpListener server = new HttpListener();
         server.Prefixes.Add("http://localhost:8080/");
+        server.Prefixes.Add("https://localhost:8081/");
         server.Start();
         Console.WriteLine("Server in ascolto...");
         while (true)
