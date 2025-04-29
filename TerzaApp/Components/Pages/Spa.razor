@@ -1,6 +1,7 @@
 ﻿@page "/spa"
 @using System.Text.Json
 @using TerzaApp.Dati.Strutture
+@inject TerzaApp.Dati.Archivio db
 
 <h3>Single Page Application</h3>
 
@@ -17,7 +18,7 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (Prodotto singolo in prodotti)
+            @foreach (Prodotto singolo in db.prodotti)
             {
                 if (singolo.Nome.Contains(ricerca) || singolo.Descrizione.Contains(ricerca))
                 {
@@ -55,35 +56,25 @@
     string ricerca = "";
     Prodotto bozza = new Prodotto();
 
-    List<Prodotto> prodotti = new List<Prodotto>();
-
     protected override void OnInitialized()
     {
         // controllo se esiste un archivio dei prodotti
-        if (File.Exists("prodotti.json"))
-        {
-            // ne leggo il contenuto
-            string versioneJSON = File.ReadAllText("prodotti.json");
-            prodotti = JsonSerializer.Deserialize< List<Prodotto> >(versioneJSON);
-        }
+
         base.OnInitialized();
     }
 
     void Cancella(Prodotto selezionato)
     {
-        prodotti.Remove(selezionato);
-        string versioneJSON = JsonSerializer.Serialize(prodotti);
-        File.WriteAllText("prodotti.json", versioneJSON);
+        db.prodotti.Remove(selezionato);
+        db.Salva();
     }
 
     void Salva()
     {
         // prima inserisco
-        prodotti.Add(bozza);
+        db.prodotti.Add(bozza);
         bozza = new Prodotto();
         // poi salvo
-        string versioneJSON = JsonSerializer.Serialize(prodotti);
-        File.WriteAllText("prodotti.json", versioneJSON);
-        Console.WriteLine(versioneJSON);
+        db.Salva();
     }
 }

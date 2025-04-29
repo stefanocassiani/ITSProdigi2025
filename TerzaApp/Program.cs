@@ -1,10 +1,17 @@
 using TerzaApp.Components;
+using TerzaApp.Dati;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder
     .Services
+    .AddSingleton<Archivio>(i =>
+    {   // nel momento in cui il singleton viene creato viene creato
+        Archivio nuovo = new Archivio();
+        nuovo.Recupera(); // lancio il recupero dell'archivio da disco
+        return nuovo; // e lo restituisco al sistema che lo mette a disposizione
+    })
     .AddRazorComponents()
     .AddInteractiveServerComponents();
 
