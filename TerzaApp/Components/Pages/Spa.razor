@@ -1,0 +1,89 @@
+﻿@page "/spa"
+@using System.Text.Json
+@using TerzaApp.Dati.Strutture
+
+<h3>Single Page Application</h3>
+
+<input class="form-control" @bind="ricerca" placeholder="Cerca tra i prodotti..." />
+
+<div class="table-responsive">
+    <table class="table table-sm table-hover">
+        <thead>
+            <tr>
+                <th>Nome</th>
+                <th>Descrizione</th>
+                <th>Prezzo</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (Prodotto singolo in prodotti)
+            {
+                if (singolo.Nome.Contains(ricerca) || singolo.Descrizione.Contains(ricerca))
+                {
+                    <tr>
+                        <td>@singolo.Nome</td>
+                        <td>@singolo.Descrizione</td>
+                        <td>@singolo.Currency</td>
+                        <td>
+                            <div class="btn btn-sm btn-danger" @onclick="e => Cancella(singolo) ">cancella</div>
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+        <tfoot>
+            <tr>
+                <td>
+                    <input @bind="bozza.Nome" class="form-control" />
+                </td>
+                <td>
+                    <input @bind="bozza.Descrizione" class="form-control" />
+                </td>
+                <td>
+                    <input type="number" @bind="bozza.Prezzo" class="form-control" />
+                </td>
+                <td>
+                    <div class="btn btn-sm btn-success" @onclick="Salva">salva</div>
+                </td>
+            </tr>
+        </tfoot>
+    </table>
+</div>
+
+@code {
+    string ricerca = "";
+    Prodotto bozza = new Prodotto();
+
+    List<Prodotto> prodotti = new List<Prodotto>();
+
+    protected override void OnInitialized()
+    {
+        // controllo se esiste un archivio dei prodotti
+        if (File.Exists("prodotti.json"))
+        {
+            // ne leggo il contenuto
+            string versioneJSON = File.ReadAllText("prodotti.json");
+            prodotti = JsonSerializer.Deserialize< List<Prodotto> >(versioneJSON);
+        }
+        base.OnInitialized();
+    }
+
+    void Cancella(Prodotto selezionato)
+    {
+        prodotti.Remove(selezionato);
+        string versioneJSON = JsonSerializer.Serialize(prodotti);
+        File.WriteAllText("prodotti.json", versioneJSON);
+    }
+
+    void Salva()
+    {
+        // prima inserisco
+        prodotti.Add(bozza);
+        bozza = new Prodotto();
+        // poi salvo
+        string versioneJSON = JsonSerializer.Serialize(prodotti);
+        File.WriteAllText("prodotti.json", versioneJSON);
+        Console.WriteLine(versioneJSON);
+    }
+}
