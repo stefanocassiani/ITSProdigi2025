@@ -1,11 +1,11 @@
-﻿@page "/spa"
+﻿@page "/categorie"
 @using System.Text.Json
 @using TerzaApp.Dati.Strutture
 @inject TerzaApp.Dati.Archivio db
 
-<h3>Single Page Application</h3>
+<h3>Categorie</h3>
 
-<input class="form-control" @bind="ricerca" placeholder="Cerca tra i prodotti..." />
+<input class="form-control" @bind="ricerca" placeholder="Cerca nelle categorie..." />
 
 <div class="table-responsive">
     <table class="table table-sm table-hover">
@@ -13,19 +13,17 @@
             <tr>
                 <th>Nome</th>
                 <th>Descrizione</th>
-                <th class="text-end">Prezzo</th>
                 <th class="w-25"></th>
             </tr>
         </thead>
         <tbody>
-            @foreach (Prodotto singolo in db.prodotti)
+            @foreach (Categoria singolo in db.categorie)
             {
                 if (singolo.Nome.Contains(ricerca) || singolo.Descrizione.Contains(ricerca))
                 {
                     <tr>
                         <td>@singolo.Nome</td>
                         <td>@singolo.Descrizione</td>
-                        <td class="text-end">@singolo.Currency</td>
                         <td class="text-end">
                             <div class="btn btn-sm btn-danger" @onclick="e => Cancella(singolo) ">cancella</div>
                         </td>
@@ -41,9 +39,6 @@
                 <td>
                     <input @bind="bozza.Descrizione" class="form-control" />
                 </td>
-                <td>
-                    <input type="number" @bind="bozza.Prezzo" class="form-control" />
-                </td>
                 <td class="text-end">
                     <div class="btn btn-sm btn-success" @onclick="Salva">salva</div>
                 </td>
@@ -54,7 +49,7 @@
 
 @code {
     string ricerca = "";
-    Prodotto bozza = new Prodotto();
+    Categoria bozza = new Categoria();
 
     protected override void OnInitialized()
     {
@@ -63,17 +58,17 @@
         base.OnInitialized();
     }
 
-    void Cancella(Prodotto selezionato)
+    void Cancella(Categoria selezionato)
     {
-        db.prodotti.Remove(selezionato);
+        db.categorie.Remove(selezionato);
         db.Salva();
     }
 
     void Salva()
     {
         // prima inserisco
-        db.prodotti.Add(bozza);
-        bozza = new Prodotto();
+        db.categorie.Add(bozza);
+        bozza = new Categoria();
         // poi salvo
         db.Salva();
     }

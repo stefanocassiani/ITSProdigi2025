@@ -3,7 +3,7 @@ using TerzaApp.Dati.Strutture;
 
 namespace TerzaApp.Dati
 {
-    public class Archivio
+    class Archivio
     {
         public List<Prodotto> prodotti { get; set; } = new List<Prodotto>();
         public List<Categoria> categorie { get; set; } = new List<Categoria>();
