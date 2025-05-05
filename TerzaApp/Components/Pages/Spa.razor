@@ -5,62 +5,101 @@
 
 <h3>Single Page Application</h3>
 
-<input class="form-control" @bind="ricerca" placeholder="Cerca tra i prodotti..." />
-
-<div class="table-responsive">
-    <table class="table table-sm table-hover">
-        <thead>
-            <tr>
-                <th>Nome</th>
-                <th>Descrizione</th>
-                <th class="text-end">Prezzo</th>
-                <th class="w-25"></th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (Prodotto singolo in db.prodotti)
-            {
-                if (singolo.Nome.Contains(ricerca) || singolo.Descrizione.Contains(ricerca))
+@if (stoInserendo)
+{
+    <div class="row g-2">
+        <div class="col-md-3">Nome</div>
+        <div class="col-md-9"><input class="form-control" @bind="bozza.Nome"/></div>
+        <div class="col-md-3">Prezzo</div>
+        <div class="col-md-3"><input class="form-control" type="number" @bind="bozza.Prezzo"/></div>
+        <div class="col-md-3">Categoria</div>
+        <div class="col-md-3">
+            <select class="form-select" @onchange="CategoriaModificata">
+                @foreach(Categoria singola in db.categorie)
                 {
-                    <tr>
-                        <td>@singolo.Nome</td>
-                        <td>@singolo.Descrizione</td>
-                        <td class="text-end">@singolo.Currency</td>
-                        <td class="text-end">
-                            <div class="btn btn-sm btn-danger" @onclick="e => Cancella(singolo) ">cancella</div>
-                        </td>
-                    </tr>
+                    if(singola == bozza.Categoria)
+                    {
+                        <option selected>@singola.Nome</option>
+                    } else
+                    {
+                        <option>@singola.Nome</option>
+                    }
                 }
-            }
-        </tbody>
-        <tfoot>
-            <tr>
-                <td>
-                    <input @bind="bozza.Nome" class="form-control" />
-                </td>
-                <td>
-                    <input @bind="bozza.Descrizione" class="form-control" />
-                </td>
-                <td>
-                    <input type="number" @bind="bozza.Prezzo" class="form-control" />
-                </td>
-                <td class="text-end">
-                    <div class="btn btn-sm btn-success" @onclick="Salva">salva</div>
-                </td>
-            </tr>
-        </tfoot>
-    </table>
-</div>
+            </select>
+        </div>
+        <div class="col-md-12">Descrizione</div>
+        <div class="col-md-12"><textarea class="form-control" @bind="bozza.Descrizione" /></div>
+        <div class="col-md-12 text-end">
+            <div class="btn btn-primary" @onclick="Salva">Salva</div>
+        </div>
+    </div>
+} else
+{
+    <input class="form-control" @bind="ricerca" placeholder="Cerca tra i prodotti..." />
+
+    <div class="table-responsive">
+        <table class="table table-sm table-hover">
+            <thead>
+                <tr>
+                    <th>Nome</th>
+                    <th>Descrizione</th>
+                    <th class="text-end">Prezzo</th>
+                    <th width="1%"></th>
+                    <th width="1%" class="text-end">
+                        <div class="btn btn-sm btn-success" @onclick="e => stoInserendo = true">nuovo</div>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (Prodotto singolo in db.prodotti)
+                {
+                    if (singolo.Nome.Contains(ricerca) || singolo.Descrizione.Contains(ricerca))
+                    {
+                        <tr>
+                            <td>@singolo.Nome</td>
+                            <td>@singolo.Descrizione</td>
+                            <td class="text-end">@singolo.Currency</td>
+                            <td class="text-end">
+                                <div class="btn btn-sm btn-warning" @onclick="e => Modifica(singolo)">modifica</div>
+                            </td>
+                            <td class="text-end">
+                                <div class="btn btn-sm btn-danger" @onclick="e => Cancella(singolo) ">cancella</div>
+                            </td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+}
+
+
 
 @code {
     string ricerca = "";
     Prodotto bozza = new Prodotto();
+
+    bool stoInserendo = false;
 
     protected override void OnInitialized()
     {
         // controllo se esiste un archivio dei prodotti
 
         base.OnInitialized();
+    }
+
+    void CategoriaModificata(ChangeEventArgs evento)
+    {
+        Categoria selezionata = db
+                                .categorie
+                                .FirstOrDefault(c => c.Nome == evento.Value.ToString());
+        bozza.Categoria = selezionata;
+    }
+
+    void Modifica(Prodotto selezionato)
+    {
+        bozza = selezionato;
+        stoInserendo = true;
     }
 
     void Cancella(Prodotto selezionato)
@@ -71,10 +110,20 @@
 
     void Salva()
     {
-        // prima inserisco
-        db.prodotti.Add(bozza);
-        bozza = new Prodotto();
+        // se non esiste di già
+        if (!db.prodotti.Contains(bozza))
+        {
+            // lo inserisco
+            db.prodotti.Add(bozza);
+        }
+
         // poi salvo
         db.Salva();
+        
+        // e resetto il draft su cui lavora l'utente
+        bozza = new Prodotto();
+        
+        // chiudo alla fine la fiestra
+        stoInserendo = false;
     }
 }
