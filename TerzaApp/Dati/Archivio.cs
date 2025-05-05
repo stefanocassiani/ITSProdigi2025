@@ -8,6 +8,7 @@ namespace TerzaApp.Dati
     {
         public List<Prodotto> prodotti { get; set; } = new List<Prodotto>();
         public List<Categoria> categorie { get; set; } = new List<Categoria>();
+        public List<Collezione> collezioni { get; set; } = new List<Collezione>();
 
         public Archivio() {
             
@@ -33,6 +34,16 @@ namespace TerzaApp.Dati
             categorie.Add(singola);
         }
 
+        public void AddCollezione(Collezione singola)
+        {
+            foreach (Collezione inDB in collezioni)
+            {
+                singola.IdCollezione = Math.Max(singola.IdCollezione, inDB.IdCollezione);
+            }
+            singola.IdCollezione++;
+            collezioni.Add(singola);
+        }
+
         public void Recupera()
         {
             if (File.Exists("archivio.json"))
@@ -43,6 +54,7 @@ namespace TerzaApp.Dati
                 {
                     this.prodotti = vecchio.prodotti;
                     this.categorie = vecchio.categorie;
+                    this.collezioni = vecchio.collezioni;
                 }
             }
         }

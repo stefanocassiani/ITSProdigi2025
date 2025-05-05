@@ -1,0 +1,99 @@
+﻿@page "/collezioni"
+@using System.Text.Json
+@using TerzaApp.Dati.Strutture
+@inject TerzaApp.Dati.Archivio db
+
+<h3>Collezioni</h3>
+
+@if (stoInserendo)
+{
+    <div class="row g-2">
+        <div class="col-md-3">Nome</div>
+        <div class="col-md-9"><input class="form-control" @bind="bozza.Nome" /></div>
+        <div class="col-md-12 text-end">
+            <div class="btn btn-primary" @onclick="Salva">Salva</div>
+        </div>
+    </div>
+}
+else
+{
+    <input class="form-control" @bind="ricerca" placeholder="Cerca tra i prodotti..." />
+
+    <div class="table-responsive">
+        <table class="table table-sm table-hover">
+            <thead>
+                <tr>
+                    <th>Nome</th>
+                    <th class="text-end">Prezzo</th>
+                    <th width="1%" class="text-end">
+                        <div class="btn btn-sm btn-success" @onclick="e => stoInserendo = true">nuovo</div>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (Collezione singolo in db.collezioni)
+                {
+                    if (singolo.Nome.Contains(ricerca))
+                    {
+                        <tr>
+                            <td>@singolo.Nome</td>
+                            <td class="text-end">
+                                <div class="btn btn-sm btn-warning" @onclick="e => Modifica(singolo)">modifica</div>
+                            </td>
+                            <td class="text-end">
+                                <div class="btn btn-sm btn-danger" @onclick="e => Cancella(singolo) ">cancella</div>
+                            </td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+}
+
+
+
+@code {
+    string ricerca = "";
+    Collezione bozza = new Collezione();
+
+    bool stoInserendo = false;
+
+    protected override void OnInitialized()
+    {
+        // controllo se esiste un archivio dei prodotti
+
+        base.OnInitialized();
+    }
+
+    void Modifica(Collezione selezionato)
+    {
+        bozza = selezionato;
+        stoInserendo = true;
+    }
+
+    void Cancella(Collezione selezionato)
+    {
+        db.collezioni.Remove(selezionato);
+        db.Salva();
+    }
+
+    void Salva()
+    {
+        // se non esiste di già
+        if (!db.collezioni.Contains(bozza))
+        {
+            // lo inserisco
+            db.AddCollezione(bozza);
+        }
+
+        // poi salvo
+        db.Salva();
+
+        // e resetto il draft su cui lavora l'utente
+        bozza = new Collezione();
+
+        // chiudo alla fine la fiestra
+        stoInserendo = false;
+    }
+}

@@ -8,12 +8,12 @@
 @if (stoInserendo)
 {
     <div class="row g-2">
-        <div class="col-md-3">Nome</div>
-        <div class="col-md-9"><input class="form-control" @bind="bozza.Nome"/></div>
-        <div class="col-md-3">Prezzo</div>
-        <div class="col-md-3"><input class="form-control" type="number" @bind="bozza.Prezzo"/></div>
-        <div class="col-md-3">Categoria</div>
-        <div class="col-md-3">
+        <div class="col-md-2">Nome</div>
+        <div class="col-md-10"><input class="form-control" @bind="bozza.Nome"/></div>
+        <div class="col-md-2">Prezzo</div>
+        <div class="col-md-2"><input class="form-control" type="number" @bind="bozza.Prezzo"/></div>
+        <div class="col-md-2">Categoria</div>
+        <div class="col-md-2">
             <select class="form-select" @onchange="CategoriaModificata">
                 <option value="0">Nessuna</option>
                 @foreach(Categoria singola in db.categorie)
@@ -28,6 +28,24 @@
                 }
             </select>
         </div>
+        <div class="col-md-2">Collezione</div>
+        <div class="col-md-2">
+            <select class="form-select" @onchange="e => CollezioneModificata(e)">
+                <option value="0">Nessuna</option>
+                @foreach (Collezione singola in db.collezioni)
+                {
+                    if(singola.IdCollezione == bozza.IdCollezione)
+                    {
+                        <option value="@singola.IdCollezione" selected>@singola.Nome</option>
+                    } else
+                    {
+                        <option value="@singola.IdCollezione">@singola.Nome</option>
+                    }
+                    
+                }
+            </select>
+        </div>
+
         <div class="col-md-12">Descrizione</div>
         <div class="col-md-12"><textarea class="form-control" @bind="bozza.Descrizione" /></div>
         <div class="col-md-12 text-end">
@@ -43,6 +61,7 @@
             <thead>
                 <tr>
                     <th>Categoria</th>
+                    <th>Collezione</th>
                     <th>Nome</th>
                     <th>Descrizione</th>
                     <th class="text-end">Prezzo</th>
@@ -59,6 +78,7 @@
                     {
                         <tr>
                             <td>@db.categorie.FirstOrDefault( x => x.IdCategoria == singolo.IdCategoria )</td>
+                            <td>@db.collezioni.FirstOrDefault( x => x.IdCollezione == singolo.IdCollezione )</td>
                             <td>@singolo.Nome</td>
                             <td>@singolo.Descrizione</td>
                             <td class="text-end">@singolo.Currency</td>
@@ -94,6 +114,11 @@
     void CategoriaModificata(ChangeEventArgs evento)
     {
         bozza.IdCategoria = int.Parse(evento.Value.ToString());
+    }
+
+    void CollezioneModificata(ChangeEventArgs evento)
+    {
+        bozza.IdCollezione = int.Parse(evento.Value.ToString());
     }
 
     void Modifica(Prodotto selezionato)

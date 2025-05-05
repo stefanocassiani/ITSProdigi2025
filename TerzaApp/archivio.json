@@ -6,6 +6,7 @@
       "Descrizione": "portatile 15 pollici con sistema operativo W11pro",
       "Prezzo": 900,
       "IdCategoria": 1,
+      "IdCollezione": 1,
       "Currency": "900,00 \u20AC"
     }
   ],
@@ -27,6 +28,13 @@
       "Nome": "Offerte",
       "Descrizione": "Articoli in offerta",
       "Creazione": "2025-05-05T12:08:12.9849315+02:00"
+    }
+  ],
+  "collezioni": [
+    {
+      "IdCollezione": 1,
+      "Nome": "Primavera 2025",
+      "Creazione": "2025-05-05T17:43:33.3924427+02:00"
     }
   ]
 }

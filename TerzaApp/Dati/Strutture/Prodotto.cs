@@ -7,6 +7,7 @@
         public string Descrizione { get; set; } = "";
         public double Prezzo { get; set; } = 0;
         public int IdCategoria { get; set; } = 0;
+        public int IdCollezione { get; set; } = 0;
         public string Currency => $"{this.Prezzo:C2}";
         
         public override string ToString()
