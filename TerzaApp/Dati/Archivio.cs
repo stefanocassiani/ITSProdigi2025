@@ -1,4 +1,5 @@
 ﻿using System.Text.Json;
+using System.Text.Json.Serialization;
 using TerzaApp.Dati.Strutture;
 
 namespace TerzaApp.Dati
@@ -10,6 +11,26 @@ namespace TerzaApp.Dati
 
         public Archivio() {
             
+        }
+
+        public void AddProdotto(Prodotto singolo)
+        {
+            foreach(Prodotto inDB in prodotti)
+            {
+                singolo.IdProdotto = Math.Max(singolo.IdProdotto, inDB.IdProdotto);
+            }
+            singolo.IdProdotto++;
+            prodotti.Add(singolo);
+        }
+
+        public void AddCategoria(Categoria singola)
+        {
+            foreach (Categoria inDB in categorie)
+            {
+                singola.IdCategoria = Math.Max(singola.IdCategoria, inDB.IdCategoria);
+            }
+            singola.IdCategoria++;
+            categorie.Add(singola);
         }
 
         public void Recupera()
@@ -28,7 +49,11 @@ namespace TerzaApp.Dati
 
         public void Salva()
         {
-            string json = JsonSerializer.Serialize(this);
+            JsonSerializerOptions opzioni = new JsonSerializerOptions
+            {
+                WriteIndented = true
+            };
+            string json = JsonSerializer.Serialize(this, opzioni);
             File.WriteAllText("archivio.json", json);
         }
     }

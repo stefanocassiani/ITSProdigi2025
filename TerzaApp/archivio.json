@@ -1,1 +1,32 @@
-{"prodotti":[{"Nome":"mouse","Descrizione":"mouse!!!!","Prezzo":12,"Categoria":{"Nome":"Elettronica","Descrizione":"articoli di elettronica","Creazione":"2025-04-29T15:33:52.7216593+02:00"},"Currency":"12,00 \u20AC"},{"Nome":"tastiera","Descrizione":"logitec","Prezzo":47,"Categoria":{"Nome":"Gadgets","Descrizione":"regali per lui e per lei","Creazione":"2025-04-29T15:34:02.7815635+02:00"},"Currency":"47,00 \u20AC"},{"Nome":"portatile","Descrizione":"asus!!!!","Prezzo":1200,"Categoria":{"Nome":"Gadgets","Descrizione":"regali per lui e per lei","Creazione":"2025-04-29T15:34:02.7815635+02:00"},"Currency":"1.200,00 \u20AC"},{"Nome":"Mouse e tastiera","Descrizione":"offerta pacchetto","Prezzo":50,"Categoria":{"Nome":"Elettronica","Descrizione":"articoli di elettronica","Creazione":"2025-04-29T15:33:52.7216593+02:00"},"Currency":"50,00 \u20AC"},{"Nome":"Surface","Descrizione":"portatile microsoft","Prezzo":600,"Categoria":null,"Currency":"600,00 \u20AC"}],"categorie":[{"Nome":"Elettronica","Descrizione":"articoli di elettronica","Creazione":"2025-04-29T15:33:52.7216593+02:00"},{"Nome":"Gadgets","Descrizione":"regali per lui e per lei","Creazione":"2025-04-29T15:34:02.7815635+02:00"}]}
+{
+  "prodotti": [
+    {
+      "IdProdotto": 1,
+      "Nome": "portatile lenovo",
+      "Descrizione": "portatile 15 pollici con sistema operativo W11pro",
+      "Prezzo": 900,
+      "IdCategoria": 1,
+      "Currency": "900,00 \u20AC"
+    }
+  ],
+  "categorie": [
+    {
+      "IdCategoria": 1,
+      "Nome": "Elettronica",
+      "Descrizione": "materiale di elettronica a catalogo",
+      "Creazione": "2025-05-05T11:55:07.4234055+02:00"
+    },
+    {
+      "IdCategoria": 2,
+      "Nome": "gadgets",
+      "Descrizione": "articoli da regalo di dubbia origine",
+      "Creazione": "2025-05-05T11:56:20.3584284+02:00"
+    },
+    {
+      "IdCategoria": 3,
+      "Nome": "Offerte",
+      "Descrizione": "Articoli in offerta",
+      "Creazione": "2025-05-05T12:08:12.9849315+02:00"
+    }
+  ]
+}

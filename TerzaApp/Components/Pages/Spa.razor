@@ -15,15 +15,15 @@
         <div class="col-md-3">Categoria</div>
         <div class="col-md-3">
             <select class="form-select" @onchange="CategoriaModificata">
-                <option>Nessuna</option>
+                <option value="0">Nessuna</option>
                 @foreach(Categoria singola in db.categorie)
                 {
-                    if(singola == bozza.Categoria)
+                    if(singola.IdCategoria == bozza.IdCategoria)
                     {
-                        <option selected>@singola.Nome</option>
+                        <option value="@singola.IdCategoria" selected>@singola.Nome</option>
                     } else
                     {
-                        <option>@singola.Nome</option>
+                        <option value="@singola.IdCategoria">@singola.Nome</option>
                     }
                 }
             </select>
@@ -58,7 +58,7 @@
                     if (singolo.Nome.Contains(ricerca) || singolo.Descrizione.Contains(ricerca))
                     {
                         <tr>
-                            <td>@singolo.Categoria</td>
+                            <td>@db.categorie.FirstOrDefault( x => x.IdCategoria == singolo.IdCategoria )</td>
                             <td>@singolo.Nome</td>
                             <td>@singolo.Descrizione</td>
                             <td class="text-end">@singolo.Currency</td>
@@ -93,18 +93,7 @@
 
     void CategoriaModificata(ChangeEventArgs evento)
     {
-        if(evento.Value.ToString() == "Nessuna")
-        {
-            bozza.Categoria = null;
-        } else
-        {
-            Categoria selezionata = db
-                                .categorie
-                                .FirstOrDefault(
-                                    c => c.Nome == evento.Value.ToString()
-                                );
-            bozza.Categoria = selezionata;
-        }
+        bozza.IdCategoria = int.Parse(evento.Value.ToString());
     }
 
     void Modifica(Prodotto selezionato)
@@ -125,7 +114,7 @@
         if (!db.prodotti.Contains(bozza))
         {
             // lo inserisco
-            db.prodotti.Add(bozza);
+            db.AddProdotto(bozza);
         }
 
         // poi salvo
