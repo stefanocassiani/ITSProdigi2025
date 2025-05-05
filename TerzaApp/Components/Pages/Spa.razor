@@ -15,6 +15,7 @@
         <div class="col-md-3">Categoria</div>
         <div class="col-md-3">
             <select class="form-select" @onchange="CategoriaModificata">
+                <option>Nessuna</option>
                 @foreach(Categoria singola in db.categorie)
                 {
                     if(singola == bozza.Categoria)
@@ -41,6 +42,7 @@
         <table class="table table-sm table-hover">
             <thead>
                 <tr>
+                    <th>Categoria</th>
                     <th>Nome</th>
                     <th>Descrizione</th>
                     <th class="text-end">Prezzo</th>
@@ -56,6 +58,7 @@
                     if (singolo.Nome.Contains(ricerca) || singolo.Descrizione.Contains(ricerca))
                     {
                         <tr>
+                            <td>@singolo.Categoria</td>
                             <td>@singolo.Nome</td>
                             <td>@singolo.Descrizione</td>
                             <td class="text-end">@singolo.Currency</td>
@@ -90,10 +93,18 @@
 
     void CategoriaModificata(ChangeEventArgs evento)
     {
-        Categoria selezionata = db
+        if(evento.Value.ToString() == "Nessuna")
+        {
+            bozza.Categoria = null;
+        } else
+        {
+            Categoria selezionata = db
                                 .categorie
-                                .FirstOrDefault(c => c.Nome == evento.Value.ToString());
-        bozza.Categoria = selezionata;
+                                .FirstOrDefault(
+                                    c => c.Nome == evento.Value.ToString()
+                                );
+            bozza.Categoria = selezionata;
+        }
     }
 
     void Modifica(Prodotto selezionato)
