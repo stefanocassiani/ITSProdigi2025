@@ -3,7 +3,9 @@
 @using TerzaApp.Dati.Strutture
 @inject TerzaApp.Dati.Archivio db
 
-<h3>Single Page Application</h3>
+<Titolo titolo="Prodotti" ricerca="@(!stoInserendo)" OnRicerca="testo => ricerca = testo">
+    Usa <u>questa</u> pagina per gestire i tuoi prodotti!
+</Titolo>
 
 @if (stoInserendo)
 {
@@ -54,7 +56,6 @@
     </div>
 } else
 {
-    <input class="form-control" @bind="ricerca" placeholder="Cerca tra i prodotti..." />
 
     <div class="table-responsive">
         <table class="table table-sm table-hover">

@@ -1,0 +1,32 @@
+﻿<h3>
+    <i class="bi bi-pencil me-2"/>
+    @titolo
+</h3>
+@if(ChildContent != null)
+{
+    <p>@ChildContent</p>
+}
+@if (ricerca)
+{
+    <div class="mb-2">
+        <input class="form-control" placeholder="cerca..." @onchange="TestoCambiato" />
+    </div>
+}
+
+@code {
+    [Parameter] public string titolo { get; set; } = string.Empty;
+    [Parameter] public bool ricerca { get; set; } = false;
+
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    [Parameter] public EventCallback<string> OnRicerca { get; set; }
+
+    private void TestoCambiato(ChangeEventArgs eventArgs)
+    {
+        string valore = eventArgs.Value.ToString();
+        if (OnRicerca.HasDelegate)
+        {
+            OnRicerca.InvokeAsync(valore);
+        }
+    }
+}

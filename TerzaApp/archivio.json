@@ -8,6 +8,24 @@
       "IdCategoria": 1,
       "IdCollezione": 1,
       "Currency": "900,00 \u20AC"
+    },
+    {
+      "IdProdotto": 2,
+      "Nome": "mouse",
+      "Descrizione": "bouse bluetooth",
+      "Prezzo": 12,
+      "IdCategoria": 1,
+      "IdCollezione": 1,
+      "Currency": "12,00 \u20AC"
+    },
+    {
+      "IdProdotto": 3,
+      "Nome": "portatile hp",
+      "Descrizione": "promozione",
+      "Prezzo": 600,
+      "IdCategoria": 1,
+      "IdCollezione": 1,
+      "Currency": "600,00 \u20AC"
     }
   ],
   "categorie": [

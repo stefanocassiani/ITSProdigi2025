@@ -8,41 +8,10 @@
 
 <div class="nav-scrollable" onclick="document.querySelector('.navbar-toggler').click()">
     <nav class="flex-column">
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
-                <span class="bi bi-house-door-fill-nav-menu" aria-hidden="true"></span> Home
-            </NavLink>
-        </div>
-
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="moltiplicazioni">
-                <i class="bi bi-calculator me-3"></i> Moltiplicazioni
-            </NavLink>
-        </div>
-
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="divisioni">
-                <i class="bi bi-calculator me-3"></i> Divisioni
-            </NavLink>
-        </div>
-
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="spa">
-                <i class="bi bi-cart me-3"></i> Prodotti
-            </NavLink>
-        </div>
-
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="categorie">
-                <i class="bi bi-tags-fill me-3"></i> Categorie
-            </NavLink>
-        </div>
-
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="collezioni">
-                <i class="bi bi-archive me-3"></i> Collezioni
-            </NavLink>
-        </div>
+        <VoceMenu href="moltiplicazioni" icona="bi-calculator" descrizione="Moltiplicazioni" nuova="true" />
+        <VoceMenu href="divisioni" icona="bi-calculator" descrizione="Divisioni" />
+        <VoceMenu href="spa" icona="bi-cart" descrizione="Prodotti" />
+        <VoceMenu href="categorie" icona="bi-tags-fill" descrizione="Categorie" />
+        <VoceMenu href="collezioni" icona="bi-archive" descrizione="Collezioni" />
     </nav>
 </div>
-

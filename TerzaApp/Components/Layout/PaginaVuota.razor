@@ -1,0 +1,16 @@
+﻿@inherits LayoutComponentBase
+<!-- è il template senza layout per le esportazioni -->
+
+<div class="page p-4">
+
+    <main>
+        <div class="top-row text-end">
+            <div class="btn btn-sm btn-primary" onclick="window.print();">stampa</div>
+        </div>
+
+        <article class="content">
+            @Body
+        </article>
+    </main>
+
+</div>
