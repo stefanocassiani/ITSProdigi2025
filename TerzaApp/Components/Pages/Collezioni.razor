@@ -3,7 +3,7 @@
 @using TerzaApp.Dati.Strutture
 @inject TerzaApp.Dati.Archivio db
 
-<Titolo titolo="Collezioni" ricerca="true" />
+<Titolo titolo="Collezioni" ricerca="true" OnRicerca="r => ricerca=r" />
 
 @if (stoInserendo)
 {
@@ -17,8 +17,6 @@
 }
 else
 {
-    <input class="form-control" @bind="ricerca" placeholder="Cerca tra i prodotti..." />
-
     <div class="table-responsive">
         <table class="table table-sm table-hover">
             <thead>

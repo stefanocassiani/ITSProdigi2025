@@ -3,7 +3,7 @@
 @using TerzaApp.Dati.Strutture
 @inject TerzaApp.Dati.Archivio db
 
-<Titolo titolo="Categorie" ricerca=true>
+<Titolo titolo="Categorie" ricerca=true OnRicerca="r => ricerca=r">
     <b>Usa</b> le righe sottostanti per gestire le categorie 
     attribuibili ai prodotti presenti nel sito!
 </Titolo>
@@ -22,8 +22,6 @@
 }
 else
 {
-    <input class="form-control" @bind="ricerca" placeholder="Cerca tra i prodotti..." />
-
     <div class="table-responsive">
         <table class="table table-sm table-hover">
             <thead>

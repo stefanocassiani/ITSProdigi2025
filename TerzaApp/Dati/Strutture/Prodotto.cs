@@ -1,6 +1,6 @@
 ﻿namespace TerzaApp.Dati.Strutture
 {
-    class Prodotto
+    public class Prodotto
     {
         public int IdProdotto { get; set; } = 0;
         public string Nome { get; set; } = "";

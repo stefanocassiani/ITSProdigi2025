@@ -1,0 +1,34 @@
+﻿@using TerzaApp.Dati.Strutture
+
+@if(prodotto != null)
+{
+    if (griglia)
+    {
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-header">@prodotto.Nome</div>
+                <div class="card-body">@prodotto.Descrizione</div>
+                <div class="card-footer text-end">@prodotto.Currency</div>
+            </div>
+        </div>
+    } else
+    {
+        <div class="col-md-12 row p-3 border-bottom border-start border-end">
+            <div class="col-md-3">@prodotto.Nome</div>
+            <div class="col-md-7">@prodotto.Descrizione</div>
+            <div class="col-md-2 text-end">@prodotto.Currency</div>
+        </div>
+    }
+} else if(!griglia)
+{
+    <div class="col-md-12 row p-3 border shadow-sm">
+        <div class="col-md-3 fw-bold">Nome</div>
+        <div class="col-md-7 fw-bold">Descrizione</div>
+        <div class="col-md-2 fw-bold text-end">Prezzo</div>
+    </div>
+}
+
+@code {
+    [Parameter] public Prodotto? prodotto { get; set; }
+    [Parameter] public bool griglia { get; set; }
+}
