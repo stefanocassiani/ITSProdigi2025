@@ -16,36 +16,11 @@
         <div class="col-md-2"><input class="form-control" type="number" @bind="bozza.Prezzo"/></div>
         <div class="col-md-2">Categoria</div>
         <div class="col-md-2">
-            <select class="form-select" @onchange="CategoriaModificata">
-                <option value="0">Nessuna</option>
-                @foreach(Categoria singola in db.categorie)
-                {
-                    if(singola.IdCategoria == bozza.IdCategoria)
-                    {
-                        <option value="@singola.IdCategoria" selected>@singola.Nome</option>
-                    } else
-                    {
-                        <option value="@singola.IdCategoria">@singola.Nome</option>
-                    }
-                }
-            </select>
+            <ListaLut elementi="db.categorie" PK="x => x.IdCategoria" OnSelect="i => bozza.IdCategoria = i" etichetta="categoria..." />
         </div>
         <div class="col-md-2">Collezione</div>
         <div class="col-md-2">
-            <select class="form-select" @onchange="e => CollezioneModificata(e)">
-                <option value="0">Nessuna</option>
-                @foreach (Collezione singola in db.collezioni)
-                {
-                    if(singola.IdCollezione == bozza.IdCollezione)
-                    {
-                        <option value="@singola.IdCollezione" selected>@singola.Nome</option>
-                    } else
-                    {
-                        <option value="@singola.IdCollezione">@singola.Nome</option>
-                    }
-                    
-                }
-            </select>
+            <ListaLut elementi="db.collezioni" PK="x => x.IdCollezione" OnSelect="i => bozza.IdCollezione = i" etichetta="collezione..." />
         </div>
 
         <div class="col-md-12">Descrizione</div>
