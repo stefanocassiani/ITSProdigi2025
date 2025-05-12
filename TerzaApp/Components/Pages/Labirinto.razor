@@ -1,57 +1,74 @@
 ﻿@page "/labirinto/{CelleX:int}/{CelleY:int}"
 <h3>Labirinto</h3>
 
-@if(labirinto != null)
-{
-    <table>
-        @for (int y = 0; y < CelleY; y++)
+<div class="row g-2">
+    <div class="col-md-6">
+        @if (labirinto != null)
         {
-            <tr>
-                @for(int x = 0; x < CelleX; x++)
+            <table>
+                @for (int y = 0; y < CelleY; y++)
                 {
-                    int xa = x;
-                    int ya = y;
-                    string colore = "";
-                    if(inizio != null && inizio.x == xa && inizio.y == ya)
-                    {
-                        colore = "success";
-                    } else if (fine != null && fine.x == xa && fine.y == ya)
-                    {
-                        colore = "danger";
-                    } else
-                    {
-                        colore = "secondary";
-                    }
-                    <td @onclick="e => Imposta(xa,ya)" @ondblclick="e => InizioFine(xa, ya)">
-                        @if (labirinto[xa, ya])
+                    <tr>
+                        @for (int x = 0; x < CelleX; x++)
                         {
-                            <div class="btn btn-outline-@colore" style="width: 2em; height: 2em;"></div>
-                        } else
-                        {
-                            <div class="btn btn-@colore" style="width: 2em; height: 2em;"></div>
+                            int xa = x;
+                            int ya = y;
+                            string colore = "";
+                            if (illuminata != null && illuminata.x == xa && illuminata.y == ya)
+                            {
+                                colore = "primary";
+                            } else if (inizio != null && inizio.x == xa && inizio.y == ya)
+                            {
+                                colore = "success";
+                            }
+                            else if (fine != null && fine.x == xa && fine.y == ya)
+                            {
+                                colore = "danger";
+                            } 
+                            else if (soluzione.Any(x => x.Equals(new Coord(xa, ya))))
+                            {
+                                colore = "warning";
+                            }                            
+                            else
+                            {
+                                colore = "secondary";
+                            }
+                            <td @onclick="e => Imposta(xa, ya)" @ondblclick="e => InizioFine(xa, ya)">
+                                @if (labirinto[xa, ya] && colore != "success" && colore != "danger" && colore != "warning")
+                                {
+                                    <div class="btn btn-outline-@colore" style="width: 2em; height: 2em;"></div>
+                                }
+                                else
+                                {
+                                    <div class="btn btn-@colore" style="width: 2em; height: 2em;"></div>
+                                }
+                            </td>
                         }
-                    </td>
+                    </tr>
                 }
-            </tr>
+            </table>
         }
-    </table>
-}
-
-@if(inizio != null && fine != null)
-{
-    <button class="btn btn-primary" @onclick="e => new Viaggiatore(soluzione, labirinto, new Coord[0], inizio, fine)">risolvi</button>
-    <ol>
+    </div>
+    <div class="col-md-6">
         @foreach (Coord singola in soluzione)
         {
-            <li>@singola</li>
+            <span class="badge bg-primary p-2 m-1" @onmouseover="e => illuminata = singola">@singola</span>
         }
-    </ol>
-}
+    </div>
+    <div class="col-md-12">
+        @if (inizio != null && fine != null)
+        {
+            <button class="btn btn-primary w-100" @onclick="Risolvi">risolvi</button>
+
+        }
+    </div>
+</div>
 
 @code {
 
     [Parameter] public int CelleX { get; set; } = 10;
     [Parameter] public int CelleY { get; set; } = 10;
+    [Parameter] public int CelleZ { get; set; } = 10;
 
     private bool[,]? labirinto;
     private List<Coord> soluzione = new List<Coord>();
@@ -59,12 +76,15 @@
     private Coord? inizio;
     private Coord? fine;
 
+    private Coord? illuminata; 
+
     protected override void OnParametersSet()
     {
         labirinto = new bool[CelleX, CelleY];
         for (int x = 0; x < CelleX; x++)
             for (int y = 0; y < CelleY; y++)
-                labirinto[x, y] = true;
+                for(int z=0; z < CelleZ; z++)
+                    labirinto[x, y] = true;
 
         base.OnParametersSet();
     }
@@ -91,6 +111,12 @@
         }
     }
 
+    void Risolvi()
+    {
+        soluzione.Clear();
+        new Viaggiatore(soluzione, labirinto, new Coord[0], inizio, fine);
+    }
+
     class Coord
     {
         public int x { get; set; } = 0;
@@ -104,7 +130,7 @@
 
         public override string ToString()
         {
-            return $"({x} {y})";
+            return $"{x} {y}";
         }
 
         public bool Equals(Coord p2)
