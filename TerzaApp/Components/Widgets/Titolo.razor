@@ -1,4 +1,7 @@
-﻿<div class="mb-3">
+﻿@using TerzaApp.Dati
+@inject Archivio db
+
+<div class="mb-3">
     <h3>
         @titolo
     </h3>
@@ -6,14 +9,17 @@
     {
         <p>@ChildContent</p>
     }
-    @if (ricerca)
+    @if (OnRicerca.HasDelegate)
     {
-        <input class="form-control" placeholder="cerca..." @oninput="TestoCambiato" />
+        <div class="input-group">
+            <ListaLut elementi="db.collezioni" PK="x => x.IdCollezione" etichetta="collezione..." />
+            <ListaLut elementi="db.categorie" PK="x => x.IdCategoria" etichetta="categoria..." />
+            <input class="form-control" placeholder="cerca..." @oninput="TestoCambiato" />
+        </div>
     }
 </div>
 @code {
     [Parameter] public string titolo { get; set; } = string.Empty;
-    [Parameter] public bool ricerca { get; set; } = false;
 
     [Parameter] public RenderFragment? ChildContent { get; set; }
 

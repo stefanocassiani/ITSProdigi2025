@@ -4,15 +4,19 @@
     <option value="0">@etichetta</option>
     @foreach(TItem singolo in elementi)
     {
-        <option value="@PK(singolo)">@singolo.ToString()</option>
+        if(PK(singolo) == valore)
+        {
+            <option selected value="@PK(singolo)">@singolo.ToString()</option>
+        } else
+        {
+            <option value="@PK(singolo)">@singolo.ToString()</option>
+        }
     }
 </select>
 
 @code {
     // es. ListaLut<Categoria>, ListaLut<Collezione>, ListaLut<Utente>
     // <ListaLut elementi="db.categorie" PK="x => x.idCategoria" />
-
-    private int idSelezionato = 0;
 
     /// <summary>
     /// carica la collezione degli elementi
@@ -25,15 +29,21 @@
     /// indica la chiave primaria della LUT
     /// </summary>
     [Parameter] public Func<TItem, int> PK { get; set; }
-
+    /// <summary>
+    /// indica il valore selezionato all'apertura del componente
+    /// </summary>
+    [Parameter] public int valore { get; set; } = 0;
+    /// <summary>
+    /// indica la descrizione che l'utente troverà quando non è selezionato alcun valore
+    /// </summary>
     [Parameter] public string etichetta { get; set; } = "nessuno";
 
     private void Cambiato(ChangeEventArgs evento)
     {
-        int id = int.Parse( evento.Value.ToString() );
+        int idSelezionato = int.Parse( evento.Value.ToString() );
         if (OnSelect.HasDelegate)
         {
-            OnSelect.InvokeAsync(id);
+            OnSelect.InvokeAsync(idSelezionato);
         }
     }
 

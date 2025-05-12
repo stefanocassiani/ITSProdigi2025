@@ -3,7 +3,7 @@
 @using TerzaApp.Dati.Strutture
 @inject TerzaApp.Dati.Archivio db
 
-<Titolo titolo="Prodotti" ricerca="@(!stoInserendo)" OnRicerca="testo => ricerca = testo">
+<Titolo titolo="Prodotti" OnRicerca="testo => ricerca = testo">
     Usa <u>questa</u> pagina per gestire i tuoi prodotti!
 </Titolo>
 
@@ -16,11 +16,11 @@
         <div class="col-md-2"><input class="form-control" type="number" @bind="bozza.Prezzo"/></div>
         <div class="col-md-2">Categoria</div>
         <div class="col-md-2">
-            <ListaLut elementi="db.categorie" PK="x => x.IdCategoria" OnSelect="i => bozza.IdCategoria = i" etichetta="categoria..." />
+            <ListaLut elementi="db.categorie" PK="x => x.IdCategoria" valore="bozza.IdCategoria" OnSelect="i => bozza.IdCategoria = i" etichetta="categoria..." />
         </div>
         <div class="col-md-2">Collezione</div>
         <div class="col-md-2">
-            <ListaLut elementi="db.collezioni" PK="x => x.IdCollezione" OnSelect="i => bozza.IdCollezione = i" etichetta="collezione..." />
+            <ListaLut elementi="db.collezioni" PK="x => x.IdCollezione" valore="bozza.IdCollezione" OnSelect="i => bozza.IdCollezione = i" etichetta="collezione..." />
         </div>
 
         <div class="col-md-12">Descrizione</div>
