@@ -37,13 +37,24 @@
     </table>
 }
 
+@if(inizio != null && fine != null)
+{
+    <button class="btn btn-primary" @onclick="e => new Viaggiatore(soluzione, labirinto, new Coord[0], inizio, fine)">risolvi</button>
+    <ol>
+        @foreach (Coord singola in soluzione)
+        {
+            <li>@singola</li>
+        }
+    </ol>
+}
+
 @code {
 
     [Parameter] public int CelleX { get; set; } = 10;
     [Parameter] public int CelleY { get; set; } = 10;
 
     private bool[,]? labirinto;
-    private Coord[]? soluzione;
+    private List<Coord> soluzione = new List<Coord>();
 
     private Coord? inizio;
     private Coord? fine;
@@ -105,7 +116,7 @@
     class Viaggiatore
     {
         public Coord[]? passi { get; set; }
-        public Viaggiatore(Coord[] soluzione, bool[,] labirinto, Coord[] attualePercorso, Coord attuale, Coord fine)
+        public Viaggiatore(List<Coord> soluzione, bool[,] labirinto, Coord[] attualePercorso, Coord attuale, Coord fine)
         {
             passi = attualePercorso;
             if(attuale.x < 0 || 
@@ -122,10 +133,12 @@
 
             if(attuale.Equals(fine))
             {
+                passi = passi.Append(attuale).ToArray();
                 // mi posso iscrivere tra i vincitori
-                if (soluzione == null || passi.Length < soluzione.Length)
+                if (soluzione.Count == 0 || passi.Length < soluzione.Count)
                 {
-                    soluzione = passi;
+                    soluzione.Clear();
+                    soluzione.AddRange(passi);
                 }
             } else
             {
