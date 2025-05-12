@@ -3,25 +3,38 @@
 @using TerzaApp.Dati.Strutture
 @inject Archivio db
 
-<Titolo titolo="Benvenuto" OnRicerca="t => testo = t">
+<Titolo @ref="titolo" titolo="Benvenuto" OnRicerca="Ricerca">
     Benvenuto nel nostro shop online!<br />
     Per poter trovare ciò che cerchi usa pure il nostro motore diricerca interno!
     <div class="text-end">
         <div class="btn btn-sm btn-success" @onclick="e => griglia = !griglia"><i class="bi bi-arrow-left-right" /></div>
     </div>
 </Titolo>
-<div class="row">
-    @if(!griglia){
-        <DettaglioProdotto griglia="griglia" />
-    }
-    @foreach (Prodotto singolo in db.prodotti.Where(p => p.Nome.Contains(testo) || p.Descrizione.Contains(testo)))
-    {
-        <DettaglioProdotto prodotto="singolo" griglia="griglia" />
-    }
-</div>
-
+@if(titolo != null)
+{
+    <div class="row">
+        @if(!griglia){
+            <DettaglioProdotto griglia="griglia" />
+        }
+        @foreach (Prodotto singolo in db.prodotti.Where(p => (p.Nome.Contains(testo) || p.Descrizione.Contains(testo)) &&
+                                                                (titolo.idCollezione == 0 || titolo.idCollezione == p.IdCollezione) &&
+                                                                (titolo.idCategoria == 0 || titolo.idCategoria == p.IdCategoria)                                                        
+                                                        ))
+        {
+            <DettaglioProdotto prodotto="singolo" griglia="griglia" />
+        }
+    </div>
+}
 
 @code {
+    Titolo titolo = new Titolo();
+
     string testo = "";
     bool griglia = true;
+
+    void Ricerca(string testoCercato)
+    {
+        testo = testoCercato;
+    }
+
 }

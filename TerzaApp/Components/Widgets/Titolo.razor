@@ -12,8 +12,8 @@
     @if (OnRicerca.HasDelegate)
     {
         <div class="input-group">
-            <ListaLut elementi="db.collezioni" PK="x => x.IdCollezione" etichetta="collezione..." />
-            <ListaLut elementi="db.categorie" PK="x => x.IdCategoria" etichetta="categoria..." />
+            <ListaLut elementi="db.collezioni" PK="x => x.IdCollezione" OnSelect="s => idCollezione = s" etichetta="collezione..." />
+            <ListaLut elementi="db.categorie" PK="x => x.IdCategoria" OnSelect="s => idCategoria = s" etichetta="categoria..." />
             <input class="form-control" placeholder="cerca..." @oninput="TestoCambiato" />
         </div>
     }
@@ -24,6 +24,9 @@
     [Parameter] public RenderFragment? ChildContent { get; set; }
 
     [Parameter] public EventCallback<string> OnRicerca { get; set; }
+
+    public int idCollezione { get; set; } = 0;
+    public int idCategoria { get; set; } = 0;
 
     private void TestoCambiato(ChangeEventArgs eventArgs)
     {
