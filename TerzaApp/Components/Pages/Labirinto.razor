@@ -1,0 +1,144 @@
+﻿@page "/labirinto/{CelleX:int}/{CelleY:int}"
+<h3>Labirinto</h3>
+
+@if(labirinto != null)
+{
+    <table>
+        @for (int y = 0; y < CelleY; y++)
+        {
+            <tr>
+                @for(int x = 0; x < CelleX; x++)
+                {
+                    int xa = x;
+                    int ya = y;
+                    string colore = "";
+                    if(inizio != null && inizio.x == xa && inizio.y == ya)
+                    {
+                        colore = "success";
+                    } else if (fine != null && fine.x == xa && fine.y == ya)
+                    {
+                        colore = "danger";
+                    } else
+                    {
+                        colore = "secondary";
+                    }
+                    <td @onclick="e => Imposta(xa,ya)" @ondblclick="e => InizioFine(xa, ya)">
+                        @if (labirinto[xa, ya])
+                        {
+                            <div class="btn btn-outline-@colore" style="width: 2em; height: 2em;"></div>
+                        } else
+                        {
+                            <div class="btn btn-@colore" style="width: 2em; height: 2em;"></div>
+                        }
+                    </td>
+                }
+            </tr>
+        }
+    </table>
+}
+
+@code {
+
+    [Parameter] public int CelleX { get; set; } = 10;
+    [Parameter] public int CelleY { get; set; } = 10;
+
+    private bool[,]? labirinto;
+    private Coord[]? soluzione;
+
+    private Coord? inizio;
+    private Coord? fine;
+
+    protected override void OnParametersSet()
+    {
+        labirinto = new bool[CelleX, CelleY];
+        for (int x = 0; x < CelleX; x++)
+            for (int y = 0; y < CelleY; y++)
+                labirinto[x, y] = true;
+
+        base.OnParametersSet();
+    }
+
+    void Imposta(int x, int y)
+    {
+        labirinto[x, y] = !labirinto[x, y];
+    }
+
+    void InizioFine(int x, int y)
+    {
+        if(inizio == null)
+        {
+            inizio = new Coord(x, y);
+        }
+        else if (fine == null)
+        {
+            fine = new Coord(x, y);
+        }
+        else
+        {
+            inizio = null;
+            fine = null;
+        }
+    }
+
+    class Coord
+    {
+        public int x { get; set; } = 0;
+        public int y { get; set; } = 0;
+
+        public Coord(int x, int y)
+        {
+            this.x = x;
+            this.y = y;
+        }
+
+        public override string ToString()
+        {
+            return $"({x} {y})";
+        }
+
+        public bool Equals(Coord p2)
+        {
+            return this.x == p2.x && this.y == p2.y;
+        }
+    }
+
+    class Viaggiatore
+    {
+        public Coord[]? passi { get; set; }
+        public Viaggiatore(Coord[] soluzione, bool[,] labirinto, Coord[] attualePercorso, Coord attuale, Coord fine)
+        {
+            passi = attualePercorso;
+            if(attuale.x < 0 || 
+                attuale.x >= labirinto.GetLength(0) || 
+                attuale.y < 0 || 
+                attuale.y >= labirinto.GetLength(1) ||
+                !labirinto[attuale.x, attuale.y] ||
+                passi.Any(p => p.Equals(attuale))
+            )
+            {
+                // sono morto
+                return;
+            }
+
+            if(attuale.Equals(fine))
+            {
+                // mi posso iscrivere tra i vincitori
+                if (soluzione == null || passi.Length < soluzione.Length)
+                {
+                    soluzione = passi;
+                }
+            } else
+            {
+                // se sono vivo, ancora non sono arrivato... ...sarà il caso di muovermi
+                // controllo ad est
+                new Viaggiatore(soluzione, labirinto, passi.Append(attuale).ToArray(), new Coord(attuale.x + 1, attuale.y), fine);
+                // controllo ad ovest
+                new Viaggiatore(soluzione, labirinto, passi.Append(attuale).ToArray(), new Coord(attuale.x - 1, attuale.y), fine);
+                // controllo a nord
+                new Viaggiatore(soluzione, labirinto, passi.Append(attuale).ToArray(), new Coord(attuale.x, attuale.y + 1), fine);
+                // controllo a sud
+                new Viaggiatore(soluzione, labirinto, passi.Append(attuale).ToArray(), new Coord(attuale.x, attuale.y - 1), fine);
+            }
+        }
+    }
+}
