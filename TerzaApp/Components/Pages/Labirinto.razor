@@ -82,7 +82,7 @@
         labirinto = new bool[CelleX, CelleY];
         for (int x = 0; x < CelleX; x++)
             for (int y = 0; y < CelleY; y++)
-                    labirinto[x, y] = true;
+                labirinto[x, y] = true;
 
         base.OnParametersSet();
     }
@@ -131,10 +131,20 @@
             return $"{x} {y}";
         }
 
+        public Coord Sottrai(Coord p2)
+        {
+            return new Coord(this.x - p2.x, this.y - p2.y);
+        }
+
         public bool Equals(Coord p2)
         {
             return this.x == p2.x && this.y == p2.y;
         }
+
+        public Coord N => new Coord(this.x, this.y - 1);
+        public Coord S => new Coord(this.x, this.y + 1);
+        public Coord E => new Coord(this.x + 1, this.y);
+        public Coord W => new Coord(this.x - 1, this.y);
     }
 
     class Viaggiatore
@@ -148,7 +158,8 @@
                 attuale.y < 0 || 
                 attuale.y >= labirinto.GetLength(1) ||
                 !labirinto[attuale.x, attuale.y] ||
-                passi.Any(p => p.Equals(attuale))
+                passi.Any(p => p.Equals(attuale)) ||
+                soluzione.Count > 0
             )
             {
                 // sono morto
@@ -156,28 +167,51 @@
             }
 
             // sono vivo
-            Coord? precedente = attualePercorso.LastOrDefault();
-
             if(attuale.Equals(fine))
             {
                 passi = passi.Append(attuale).ToArray();
                 // mi posso iscrivere tra i vincitori
-                if (soluzione.Count == 0 || passi.Length < soluzione.Count)
+                if (soluzione.Count == 0)
                 {
                     soluzione.Clear();
                     soluzione.AddRange(passi);
                 }
             } else
             {
-                // se sono vivo, ancora non sono arrivato... ...sarà il caso di muovermi
-                // controllo ad est
-                new Viaggiatore(soluzione, labirinto, passi.Append(attuale).ToArray(), new Coord(attuale.x + 1, attuale.y), fine);
-                // controllo ad ovest
-                new Viaggiatore(soluzione, labirinto, passi.Append(attuale).ToArray(), new Coord(attuale.x - 1, attuale.y), fine);
-                // controllo a nord
-                new Viaggiatore(soluzione, labirinto, passi.Append(attuale).ToArray(), new Coord(attuale.x, attuale.y + 1), fine);
-                // controllo a sud
-                new Viaggiatore(soluzione, labirinto, passi.Append(attuale).ToArray(), new Coord(attuale.x, attuale.y - 1), fine);
+                Coord? precedente = attualePercorso.LastOrDefault();
+                if(precedente != null)
+                {
+                    Coord pDelta = attuale.Sottrai(precedente);
+                    if(pDelta.x > 0) // verso est
+                    {
+                        new Viaggiatore(soluzione, labirinto, passi.Append(attuale).ToArray(), attuale.E, fine); // isteresi
+                        new Viaggiatore(soluzione, labirinto, passi.Append(attuale).ToArray(), attuale.S, fine);                        
+                        new Viaggiatore(soluzione, labirinto, passi.Append(attuale).ToArray(), attuale.N, fine);                        
+                    }
+                    else if (pDelta.x < 0) // verso ovest
+                    {
+                        new Viaggiatore(soluzione, labirinto, passi.Append(attuale).ToArray(), attuale.W, fine); // isteresi
+                        new Viaggiatore(soluzione, labirinto, passi.Append(attuale).ToArray(), attuale.N, fine);
+                        new Viaggiatore(soluzione, labirinto, passi.Append(attuale).ToArray(), attuale.S, fine);
+                    } else if(pDelta.y < 0) // verso nord
+                    {
+                        new Viaggiatore(soluzione, labirinto, passi.Append(attuale).ToArray(), attuale.N, fine); // isteresi
+                        new Viaggiatore(soluzione, labirinto, passi.Append(attuale).ToArray(), attuale.E, fine);
+                        new Viaggiatore(soluzione, labirinto, passi.Append(attuale).ToArray(), attuale.W, fine);
+                    } else // verso sud
+                    {
+                        new Viaggiatore(soluzione, labirinto, passi.Append(attuale).ToArray(), attuale.S, fine); // isteresi
+                        new Viaggiatore(soluzione, labirinto, passi.Append(attuale).ToArray(), attuale.W, fine);
+                        new Viaggiatore(soluzione, labirinto, passi.Append(attuale).ToArray(), attuale.E, fine);
+                    }
+                } else
+                {
+                    // se sono vivo, ancora non sono arrivato... ...sarà il caso di muovermi
+                    new Viaggiatore(soluzione, labirinto, passi.Append(attuale).ToArray(), attuale.N, fine);
+                    new Viaggiatore(soluzione, labirinto, passi.Append(attuale).ToArray(), attuale.E, fine);
+                    new Viaggiatore(soluzione, labirinto, passi.Append(attuale).ToArray(), attuale.S, fine);
+                    new Viaggiatore(soluzione, labirinto, passi.Append(attuale).ToArray(), attuale.W, fine);
+                }               
             }
         }
     }
