@@ -68,7 +68,6 @@
 
     [Parameter] public int CelleX { get; set; } = 10;
     [Parameter] public int CelleY { get; set; } = 10;
-    [Parameter] public int CelleZ { get; set; } = 10;
 
     private bool[,]? labirinto;
     private List<Coord> soluzione = new List<Coord>();
@@ -83,7 +82,6 @@
         labirinto = new bool[CelleX, CelleY];
         for (int x = 0; x < CelleX; x++)
             for (int y = 0; y < CelleY; y++)
-                for(int z=0; z < CelleZ; z++)
                     labirinto[x, y] = true;
 
         base.OnParametersSet();
