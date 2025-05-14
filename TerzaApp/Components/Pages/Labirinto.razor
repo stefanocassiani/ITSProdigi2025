@@ -157,6 +157,9 @@
                 return;
             }
 
+            // sono vivo
+            Coord? precedente = attualePercorso.LastOrDefault();
+
             if(attuale.Equals(fine))
             {
                 passi = passi.Append(attuale).ToArray();
