@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SecondaApp", "SecondaApp\Se
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TerzaApp", "TerzaApp\TerzaApp.csproj", "{33318E5D-F28C-4F57-BE7B-FAF18185F6BE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Stradario", "Stradario\Stradario.csproj", "{22F87327-17FD-4733-BB21-DB34507C7ACE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{33318E5D-F28C-4F57-BE7B-FAF18185F6BE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{33318E5D-F28C-4F57-BE7B-FAF18185F6BE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{33318E5D-F28C-4F57-BE7B-FAF18185F6BE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{22F87327-17FD-4733-BB21-DB34507C7ACE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{22F87327-17FD-4733-BB21-DB34507C7ACE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{22F87327-17FD-4733-BB21-DB34507C7ACE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{22F87327-17FD-4733-BB21-DB34507C7ACE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
