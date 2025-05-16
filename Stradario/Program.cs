@@ -1,4 +1,9 @@
+using Stradario;
 using Stradario.Components;
+
+// testo il nostro sistema di gestione delle coordinate
+Nominatim.RecuperaWeb(new Stradario.Strutture.Nodo() { nome = "Arezzo" });
+Nominatim.RecuperaHTTP(new Stradario.Strutture.Nodo() { nome = "Arezzo" });
 
 var builder = WebApplication.CreateBuilder(args);
 
