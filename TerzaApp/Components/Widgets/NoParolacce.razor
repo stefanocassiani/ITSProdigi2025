@@ -1,0 +1,25 @@
+﻿<textarea class="form-control" @onchange="OnTextChanged">@Valore</textarea>
+
+@code {
+    private string testo;
+    private List<string> parole = new List<string> { "cane", "gatto", "topo" };
+
+    [Parameter] public string Valore { get; set; } = string.Empty;
+    [Parameter] public EventCallback<string> ValoreChanged { get; set; }
+
+    protected override void OnParametersSet()
+    {
+        testo = Valore;
+        base.OnParametersSet();
+    }
+
+    private void OnTextChanged(ChangeEventArgs e)
+    {
+        testo = e.Value.ToString();
+        foreach (string parola in parole)
+            testo = testo.Replace(parola, "****");
+
+        if(ValoreChanged.HasDelegate)
+            ValoreChanged.InvokeAsync(testo);
+    }
+}
