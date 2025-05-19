@@ -9,9 +9,10 @@ namespace Stradario
 {
     public class Nominatim
     {
+        public const string urlBase = "https://nominatim.openstreetmap.org/";
         public static void RecuperaHTTP(Nodo nodo)
         {
-            string url = $"https://nominatim.openstreetmap.org/search?q={nodo.nome}&format=jsonv2&limit=1";
+            string url = $"{urlBase}search?q={nodo.nome}&format=jsonv2&limit=1";
             HttpClient client = new HttpClient();
             HttpRequestMessage richiesta = new HttpRequestMessage(HttpMethod.Get, url);
             richiesta.Headers.Add("User-Agent", "Other");
@@ -20,12 +21,18 @@ namespace Stradario
             {
                 string json = risposta.Content.ReadAsStringAsync().Result;
                 List<Luogo> luoghi = JsonSerializer.Deserialize<List<Luogo>>(json);
+                if (luoghi.Any())
+                {
+                    Luogo primo = luoghi.First();
+                    nodo.X = primo.X; // in WGS84 (espresse in gradi secondo un punto zero definito globalmente)
+                    nodo.Y = primo.Y;
+                }
             }
         }
 
         public static void RecuperaWeb(Nodo nodo)
         {
-            string url = $"https://nominatim.openstreetmap.org/search?q={nodo.nome}&format=jsonv2&limit=1";
+            string url = $"{urlBase}search?q={nodo.nome}&format=jsonv2&limit=1";
             WebClient client = new WebClient();
             client.Headers.Add("User-Agent: Other");
             string json = client.DownloadString(url);

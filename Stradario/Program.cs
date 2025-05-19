@@ -1,5 +1,8 @@
+using Microsoft.EntityFrameworkCore;
 using Stradario;
 using Stradario.Components;
+
+Nominatim.Luogo nuovo = new Nominatim.Luogo();
 
 // testo il nostro sistema di gestione delle coordinate
 Nominatim.RecuperaWeb(new Stradario.Strutture.Nodo() { nome = "Arezzo" });
@@ -10,6 +13,8 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
+
+builder.Services.AddDbContext<BancaDati>();
 
 var app = builder.Build();
 
