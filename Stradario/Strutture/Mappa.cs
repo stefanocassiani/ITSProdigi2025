@@ -4,8 +4,8 @@ namespace Stradario.Strutture
 {
     public class Mappa
     {
-        public List<Nodo> Nodi { get; set; }
-        public List<Arco> Archi { get; set; }
+        public List<Nodo> Nodi { get; set; } = new List<Nodo>();
+        public List<Arco> Archi { get; set; } = new List<Arco>();
 
         public Mappa(string percorsoMappa)
         {

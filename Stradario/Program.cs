@@ -1,6 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using Stradario;
 using Stradario.Components;
+using Stradario.Strutture;
+using System.Reflection.Metadata.Ecma335;
 
 Nominatim.Luogo nuovo = new Nominatim.Luogo();
 
@@ -13,7 +15,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
-
+builder.Services.AddSingleton<Mappa>(mappa => new Mappa("strade.csv") );
 builder.Services.AddDbContext<BancaDati>();
 
 var app = builder.Build();
