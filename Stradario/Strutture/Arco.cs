@@ -6,6 +6,8 @@ namespace Stradario.Strutture
     [Table("archi")]
     public class Arco : Sicurezza
     {
+        [Key]
+        public int IdArco { get; set; }
         [Required]
         public int A { get; set; }
         [Required]
