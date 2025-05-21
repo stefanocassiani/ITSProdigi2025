@@ -1,0 +1,80 @@
+﻿@page "/archi"
+@using Stradario.Components.Widgets
+@using Stradario.Strutture
+@inject BancaDati db
+<h3>Archi</h3>
+
+@if (draft == null)
+{
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th class="text-end">A</th>
+                <th class="text-end">B</th>
+                <th class="text-end">Distanza</th>
+                <th class="text-end">Creazione</th>
+                <th class="w-25 text-end"><div class="btn btn-success" @onclick="Nuovo">nuovo</div></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (Arco singolo in db.Archi)
+            {
+                <tr @onclick="e => draft = singolo">
+                    <td class="w-25">@singolo.IdArco</td>
+                    <td class="text-end">@db.Nodi.FirstOrDefault(x => x.idNodo==singolo.A)</td>
+                    <td class="text-end">@db.Nodi.FirstOrDefault(x => x.idNodo==singolo.B)</td>
+                    <td class="text-end">@singolo.Distanza</td>
+                    <td class="w-25 text-end">@singolo.Creazione.ToShortDateString()</td>
+                    <td class="w-25 text-end"><div class="btn btn-danger" @onclick:stopPropagation="true" @onclick="e => Cancella(singolo)">cancella</div></td>
+                </tr>
+            }
+        </tbody>
+
+    </table>
+}
+else
+{
+    <p>Modifica i dati dell'arco e premi Salva!</p>
+    <p>
+        <label for="nome">Partenza</label>
+        <ListaLut elementi="db.Nodi" PK="x => x.idNodo" valore="draft.A" OnSelect="x => draft.A = x" />
+    </p>
+    <p>
+        <label for="nome">Arrivo</label>
+        <ListaLut elementi="db.Nodi" PK="x => x.idNodo" valore="draft.B" OnSelect="x => draft.B = x" />
+    </p>
+    <p>
+        <label for="nome">Km tra i due punti</label>
+        <input type="number" class="form-control" id="nome" @bind="draft.Distanza" />
+    </p>
+    <p>
+        <div class="btn btn-success me-2" @onclick="Salva">Chiudi</div>
+    </p>
+}
+
+
+@code {
+    private Arco? draft;
+
+    private void Nuovo()
+    {
+        draft = new Arco();
+    }
+
+    private void Salva()
+    {
+        if (!db.Archi.Contains(draft))
+        {
+            db.Archi.Add(draft);
+        }
+        draft = null;
+        db.SaveChanges();
+    }
+
+    private void Cancella(Arco selezionato)
+    {
+        db.Archi.Remove(selezionato);
+        db.SaveChanges();
+    }
+}
