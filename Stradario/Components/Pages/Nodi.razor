@@ -1,0 +1,70 @@
+﻿@page "/nodi"
+@using Stradario.Strutture
+@inject Mappa db
+<h3>Nodi</h3>
+
+@if(draft == null)
+{
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Nome</th>
+                <th class="text-end">X</th>
+                <th class="text-end">Y</th>
+                <th class="text-end">Creazione</th>
+                <th class="w-25 text-end"><div class="btn btn-success" @onclick="Nuovo">nuovo</div></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (Nodo singolo in db.Nodi)
+            {
+                <tr @onclick="e => draft = singolo">
+                    <td class="w-25">@singolo.idNodo</td>
+                    <td>@singolo.nome</td>
+                    <td class="text-end">@singolo.X</td>
+                    <td class="text-end">@singolo.Y</td>
+                    <td class="w-25 text-end">@singolo.Creazione.ToShortDateString()</td>
+                    <td class="w-25 text-end"><div class="btn btn-danger" @onclick="e => Cancella(singolo)">cancella</div></td>
+                </tr>
+            }
+        </tbody>
+        
+    </table>
+} else
+{
+    <p>Modifica il nome del nodo e premi Salva!</p>
+    <p>
+        <label for="nome">Nome del nodo</label>
+        <input class="form-control" id="nome" @bind="draft.nome" />
+    </p>
+    <p>
+        <div class="btn btn-success me-2" @onclick="Salva">Salva</div>
+        <div class="btn btn-secondary" @onclick="e => draft = null">Annulla</div>
+    </p>
+}
+
+
+@code {
+    private Nodo? draft;
+
+    private void Nuovo()
+    {
+        draft = new Nodo();
+    }
+
+    private void Salva()
+    {
+        if (!db.Nodi.Contains(draft))
+        {
+            db.Nodi.Add(draft);
+        }
+        Nominatim.RecuperaHTTP(draft);
+        draft = null;
+    }
+
+    private void Cancella(Nodo selezionato)
+    {
+        db.Nodi.Remove(selezionato);
+    }
+}
