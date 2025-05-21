@@ -1,6 +1,6 @@
 ﻿@page "/"
 @using Stradario.Strutture
-@inject Mappa db
+@inject BancaDati db
 
 <PageTitle>Home</PageTitle>
 
@@ -8,4 +8,17 @@
 
 Welcome to your new app.
 
-<p>Nodi : @db.Nodi.Count</p>
+<p>Nodi : @db.Nodi.Count()</p>
+<p>Archi : @db.Archi.Count()</p>
+
+<button class="btn btn-success" @onclick="Importazione">Importa</button>
+
+
+@code {
+
+    private void Importazione()
+    {
+        db.Importa("strade.csv");
+    }
+
+}

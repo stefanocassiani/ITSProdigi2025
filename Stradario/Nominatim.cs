@@ -26,6 +26,7 @@ namespace Stradario
                     Luogo primo = luoghi.First();
                     nodo.X = primo.X; // in WGS84 (espresse in gradi secondo un punto zero definito globalmente)
                     nodo.Y = primo.Y;
+                    nodo.nome = primo.Nome;
                 }
             }
         }

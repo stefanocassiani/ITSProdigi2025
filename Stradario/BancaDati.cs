@@ -11,13 +11,42 @@ namespace Stradario
      */
     public class BancaDati : DbContext
     {
-        public DbSet<Nodo> nodi {  get; set; }
-        public DbSet<Arco> archi { get; set; }
+        public DbSet<Nodo> Nodi {  get; set; }
+        public DbSet<Arco> Archi { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlite("Data Source=mappa.sqlite");
             base.OnConfiguring(optionsBuilder);
+        }
+
+        public void Importa(string percorsoMappa)
+        {
+            string buffer = File.ReadAllText(percorsoMappa);
+            string[] righe = buffer.Split('\n');
+            foreach (string riga in righe)
+            {
+                string[] celle = riga.Split('\t');
+                int p1 = CreaNodo(celle[0]);
+                int p2 = CreaNodo(celle[1]);
+                int distanza = int.Parse(celle[2]);
+                if (!Archi.Any(arc => arc.A == p1 && arc.B == p2))
+                    Archi.Add(new Arco() { A = p1, B = p2, Distanza = distanza });
+                if (!Archi.Any(arc => arc.A == p2 && arc.B == p1))
+                    Archi.Add(new Arco() { A = p2, B = p1, Distanza = distanza });
+            }
+        }
+
+        public int CreaNodo(string nome)
+        {
+            Nodo? precedente = this.Nodi.FirstOrDefault( x => x.nome == nome );
+            if (precedente != null)
+                return precedente.idNodo;
+
+            Nodo nuovo = new Nodo() { nome = nome };
+            this.Nodi.Add(nuovo);
+            this.SaveChanges();
+            return nuovo.idNodo;
         }
     }
 }
