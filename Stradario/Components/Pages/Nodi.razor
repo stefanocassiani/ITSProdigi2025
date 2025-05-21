@@ -18,7 +18,7 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (Nodo singolo in db.Nodi)
+            @foreach (Nodo singolo in db.Nodi.OrderBy(x => x.nome))
             {
                 <tr @onclick="e => draft = singolo">
                     <td class="w-25">@singolo.idNodo</td>
