@@ -12,5 +12,9 @@ namespace Stradario.Strutture
         public string nome { get; set; }
         public double X { get; set; }
         public double Y { get; set; }
+        public override string ToString()
+        {
+            return this.nome;
+        }
     }
 }

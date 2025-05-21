@@ -20,21 +20,38 @@ namespace Stradario
             base.OnConfiguring(optionsBuilder);
         }
 
-        public void Importa(string percorsoMappa)
+        public bool Importa(string percorsoMappa)
         {
-            string buffer = File.ReadAllText(percorsoMappa);
-            string[] righe = buffer.Split('\n');
-            foreach (string riga in righe)
+            try
             {
-                string[] celle = riga.Split('\t');
-                int p1 = CreaNodo(celle[0]);
-                int p2 = CreaNodo(celle[1]);
-                int distanza = int.Parse(celle[2]);
-                if (!Archi.Any(arc => arc.A == p1 && arc.B == p2))
-                    Archi.Add(new Arco() { A = p1, B = p2, Distanza = distanza });
-                if (!Archi.Any(arc => arc.A == p2 && arc.B == p1))
-                    Archi.Add(new Arco() { A = p2, B = p1, Distanza = distanza });
+                Nodi.RemoveRange(  Nodi );
+                Archi.RemoveRange(  Archi );
+                SaveChanges();
+                string buffer = File.ReadAllText(percorsoMappa);
+                string[] righe = buffer.Split('\n');
+                foreach (string riga in righe)
+                {
+                    string[] celle = riga.Split('\t');
+                    int p1 = CreaNodo(celle[0]);
+                    int p2 = CreaNodo(celle[1]);
+                    int distanza = int.Parse(celle[2]);
+                    if (!Archi.Any(arc => arc.A == p1 && arc.B == p2))
+                        Archi.Add(new Arco() { A = p1, B = p2, Distanza = distanza });
+                    if (!Archi.Any(arc => arc.A == p2 && arc.B == p1))
+                        Archi.Add(new Arco() { A = p2, B = p1, Distanza = distanza });
+                }
+                foreach (Nodo singolo in this.Nodi)
+                {
+                    Nominatim.RecuperaHTTP(singolo);
+                }
+                this.SaveChanges();
+                return true;
             }
+            catch (Exception ex)
+            {
+                return false;
+            }
+            
         }
 
         public int CreaNodo(string nome)

@@ -11,14 +11,28 @@ Welcome to your new app.
 <p>Nodi : @db.Nodi.Count()</p>
 <p>Archi : @db.Archi.Count()</p>
 
-<button class="btn btn-success" @onclick="Importazione">Importa</button>
+@if(stato == null)
+{
+    <button class="btn btn-success" @onclick="Importazione">Importa</button>
+} else if(stato == true)
+{
+    <p class="alert alert-success">Importazione ultimata!</p>
+} else
+{
+    <p class="alert alert-warning">Errori con il fle...</p>
+}
+
 
 
 @code {
+    private bool? stato = null;
+    // se è null vuol dire che l'operazione è o in corso o non lanciata
+    // se è true è andata bene
+    // se è false ci sono stati degli errori con il file...
 
     private void Importazione()
     {
-        db.Importa("strade.csv");
+        stato = db.Importa("strade.csv");
     }
 
 }

@@ -1,0 +1,50 @@
+﻿@typeparam TItem
+
+<select class="form-select" @onchange="Cambiato">
+    <option value="0">@etichetta</option>
+    @foreach(TItem singolo in elementi)
+    {
+        if(PK(singolo) == valore)
+        {
+            <option selected value="@PK(singolo)">@singolo.ToString()</option>
+        } else
+        {
+            <option value="@PK(singolo)">@singolo.ToString()</option>
+        }
+    }
+</select>
+
+@code {
+    // es. ListaLut<Categoria>, ListaLut<Collezione>, ListaLut<Utente>
+    // <ListaLut elementi="db.categorie" PK="x => x.idCategoria" />
+
+    /// <summary>
+    /// carica la collezione degli elementi
+    /// </summary>
+    [Parameter] public IEnumerable<TItem> elementi { get; set; }
+    // EventCallback ci permette di avvertire l'utente
+    [Parameter] public EventCallback<int> OnSelect { get; set; }
+    // Func essere avvertiti dall'utente
+    /// <summary>
+    /// indica la chiave primaria della LUT
+    /// </summary>
+    [Parameter] public Func<TItem, int> PK { get; set; }
+    /// <summary>
+    /// indica il valore selezionato all'apertura del componente
+    /// </summary>
+    [Parameter] public int valore { get; set; } = 0;
+    /// <summary>
+    /// indica la descrizione che l'utente troverà quando non è selezionato alcun valore
+    /// </summary>
+    [Parameter] public string etichetta { get; set; } = "nessuno";
+
+    private void Cambiato(ChangeEventArgs evento)
+    {
+        int idSelezionato = int.Parse( evento.Value.ToString() );
+        if (OnSelect.HasDelegate)
+        {
+            OnSelect.InvokeAsync(idSelezionato);
+        }
+    }
+
+}
