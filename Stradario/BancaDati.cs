@@ -20,6 +20,25 @@ namespace Stradario
             base.OnConfiguring(optionsBuilder);
         }
 
+        public void TrovaPercorso(Nodo inizio, Nodo fine)
+        {
+            Dictionary<Nodo, double> distanze = new Dictionary<Nodo, double>();
+            foreach(Nodo inAnalisi in Nodi)
+            {
+                distanze.Add(inAnalisi, inAnalisi.CalcolaDistanza(fine));
+            }
+
+            List<int> idSuccessivi = Archi
+                                            .Where(x => x.A == inizio.idNodo)
+                                            .Select(x => x.B).ToList();
+
+            List<Nodo> nodiSuccessivi = Nodi
+                                            .Where(x => idSuccessivi.Contains(x.idNodo))
+                                            .OrderBy(x => distanze[x])
+                                            .ToList();
+
+        }
+
         public bool Importa(string percorsoMappa)
         {
             try

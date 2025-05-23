@@ -16,5 +16,14 @@ namespace Stradario.Strutture
         {
             return this.nome;
         }
+
+        public double CalcolaDistanza(Nodo target)
+        {
+            // calcolare la distanza tra i due nodi
+            double deltaX = this.X - target.X;
+            double deltaY = this.Y - target.Y;
+            double distanza = Math.Sqrt(deltaX * deltaX + deltaY * deltaY);
+            return distanza;
+        }
     }
 }
