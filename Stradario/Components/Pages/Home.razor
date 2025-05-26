@@ -43,10 +43,22 @@ Welcome to your new app.
         db.Nodi.First(x => x.nome.ToLower().StartsWith("A")); // like 'A%'
         db.Nodi.First(x => x.nome.ToLower().EndsWith("a")); // like '%a'
         db.Nodi.First(x => x.nome.ToLower().Contains("nco")); // like '%nco%'
+
+        List<Nodo> soluzione = new List<Nodo>();
         db.TrovaPercorso(
             db.Nodi.First(x => x.nome == "Firenze"), // inizio
-            db.Nodi.First(x => x.nome == "Roma")     // fine
+            db.Nodi.First(x => x.nome == "Roma"),     // fine
+            soluzione,
+            new Nodo[0]
         );
+
+        if (soluzione.Count > 0)
+        {
+            Console.WriteLine("un percorso esiste!");
+        } else
+        {
+            Console.WriteLine("non c'è modo di arrivare all'obbiettivo");
+        }
     }
 
 }

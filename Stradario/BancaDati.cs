@@ -20,21 +20,50 @@ namespace Stradario
             base.OnConfiguring(optionsBuilder);
         }
 
-        public void TrovaPercorso(Nodo inizio, Nodo fine)
+        public void TrovaPercorso(Nodo inizio, Nodo fine, List<Nodo> percorso, Nodo[] giàVisitati)
         {
+            // 1) valutazione di riuscita o fallimento
+            // 1.a) sono arrivato
+            if(inizio == fine)
+            {
+                percorso.AddRange(giàVisitati);
+                return;
+            }
+            // 1.b) sono arrivato secondo => deve essere lo stesso per tutti
+            if(percorso.Count > 0)
+            {
+                return;
+            }
+            // 1.c) non ho più strade percorribili => ricordarmi dove sono passato, è un informazione solo mia
+            uint[] prossimiPassi = Archi
+                                    .Where(x => x.A == inizio.idNodo)
+                                    .Select(x => x.B)
+                                    .ToArray();
+            List<Nodo> buoni = new List<Nodo>();
+            foreach (uint potenziale in prossimiPassi)
+            {
+                if(!giàVisitati.Any(x => x.idNodo == potenziale))
+                {
+                    buoni.Add( Nodi.First(x => x.idNodo == potenziale) );
+                }
+            }
+            if (buoni.Count == 0)
+                return;
+
+            // 2) mi sposto alla casella successiva
             Dictionary<Nodo, float> distanze = new Dictionary<Nodo, float>();
-            foreach(Nodo inAnalisi in Nodi)
+            foreach(Nodo inAnalisi in buoni)
             {
                 distanze.Add(inAnalisi, inAnalisi.CalcolaDistanza(fine));
             }
 
-            List<Nodo> giàVisitati = new List<Nodo>();
-
-            foreach(Arco strada in Archi.Where(x => x.A == inizio.idNodo))
+            distanze = distanze.OrderBy(x => x.Value).ToDictionary();
+            // 3) attivando i miei successori per prossimità al target
+            foreach(KeyValuePair<Nodo, float> voce in distanze)
             {
-                Nodo arrivo = Nodi.First(x => x.idNodo == strada.B);
-
+                TrovaPercorso(voce.Key, fine, percorso, giàVisitati.Append(inizio).ToArray());
             }
+
 
         }
 
