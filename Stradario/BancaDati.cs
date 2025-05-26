@@ -13,6 +13,7 @@ namespace Stradario
     {
         public DbSet<Nodo> Nodi {  get; set; }
         public DbSet<Arco> Archi { get; set; }
+        public DbSet<Strada> Strade { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

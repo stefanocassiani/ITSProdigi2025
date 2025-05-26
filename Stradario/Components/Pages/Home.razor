@@ -32,6 +32,19 @@ Welcome to your new app.
     // se è true è andata bene
     // se è false ci sono stati degli errori con il file...
 
+    protected override void OnInitialized()
+    {
+        Strada nuova = new Strada()
+            {
+                A = db.Nodi.OrderBy(x => x.idNodo).First(),
+                B = db.Nodi.OrderBy(x => x.idNodo).Last()
+            };
+        db.Strade.Add(nuova);
+        db.SaveChanges();
+        Strada salvata = db.Strade.OrderBy(x => x.IdStrada).Last();
+        base.OnInitialized();
+    }
+
     private void Importazione()
     {
         stato = db.Importa("strade.csv");
