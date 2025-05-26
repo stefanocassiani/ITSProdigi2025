@@ -22,20 +22,19 @@ namespace Stradario
 
         public void TrovaPercorso(Nodo inizio, Nodo fine)
         {
-            Dictionary<Nodo, double> distanze = new Dictionary<Nodo, double>();
+            Dictionary<Nodo, float> distanze = new Dictionary<Nodo, float>();
             foreach(Nodo inAnalisi in Nodi)
             {
                 distanze.Add(inAnalisi, inAnalisi.CalcolaDistanza(fine));
             }
 
-            List<int> idSuccessivi = Archi
-                                            .Where(x => x.A == inizio.idNodo)
-                                            .Select(x => x.B).ToList();
+            List<Nodo> giàVisitati = new List<Nodo>();
 
-            List<Nodo> nodiSuccessivi = Nodi
-                                            .Where(x => idSuccessivi.Contains(x.idNodo))
-                                            .OrderBy(x => distanze[x])
-                                            .ToList();
+            foreach(Arco strada in Archi.Where(x => x.A == inizio.idNodo))
+            {
+                Nodo arrivo = Nodi.First(x => x.idNodo == strada.B);
+
+            }
 
         }
 
@@ -51,9 +50,9 @@ namespace Stradario
                 foreach (string riga in righe)
                 {
                     string[] celle = riga.Split('\t');
-                    int p1 = CreaNodo(celle[0]);
-                    int p2 = CreaNodo(celle[1]);
-                    int distanza = int.Parse(celle[2]);
+                    uint p1 = CreaNodo(celle[0]);
+                    uint p2 = CreaNodo(celle[1]);
+                    uint distanza = uint.Parse(celle[2]);
                     if (!Archi.Any(arc => arc.A == p1 && arc.B == p2))
                         Archi.Add(new Arco() { A = p1, B = p2, Distanza = distanza });
                     if (!Archi.Any(arc => arc.A == p2 && arc.B == p1))
@@ -73,7 +72,7 @@ namespace Stradario
             
         }
 
-        public int CreaNodo(string nome)
+        public uint CreaNodo(string nome)
         {
             Nodo? precedente = this.Nodi.FirstOrDefault( x => x.nome == nome );
             if (precedente != null)

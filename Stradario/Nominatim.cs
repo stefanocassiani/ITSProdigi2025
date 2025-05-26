@@ -52,9 +52,9 @@ namespace Stradario
             [JsonPropertyName("lon")]
             public string Lon { get; set; }
             [JsonIgnore]
-            public double Y => double.Parse(Lat, CultureInfo.InvariantCulture);
+            public float Y => float.Parse(Lat, CultureInfo.InvariantCulture);
             [JsonIgnore]
-            public double X => double.Parse(Lon, CultureInfo.InvariantCulture);
+            public float X => float.Parse(Lon, CultureInfo.InvariantCulture);
             public override string ToString() => Nome;
         }
     }

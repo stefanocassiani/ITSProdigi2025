@@ -9,9 +9,9 @@ namespace Stradario.Strutture
         [Key]
         public int IdArco { get; set; }
         [Required]
-        public int A { get; set; }
+        public uint A { get; set; }
         [Required]
-        public int B { get; set; }
-        public int Distanza { get; set; } = 0;
+        public uint B { get; set; }
+        public uint Distanza { get; set; } = 0;
     }
 }

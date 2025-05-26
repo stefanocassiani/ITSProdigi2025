@@ -22,6 +22,8 @@ Welcome to your new app.
     <p class="alert alert-warning">Errori con il fle...</p>
 }
 
+<button class="btn btn-success" @onclick="Trova">trova percorso</button>
+
 
 
 @code {
@@ -33,6 +35,18 @@ Welcome to your new app.
     private void Importazione()
     {
         stato = db.Importa("strade.csv");
+    }
+
+    private void Trova()
+    {
+        db.Nodi.First(x => x.nome.ToLower() == "ancona"); // like 'ancona'
+        db.Nodi.First(x => x.nome.ToLower().StartsWith("A")); // like 'A%'
+        db.Nodi.First(x => x.nome.ToLower().EndsWith("a")); // like '%a'
+        db.Nodi.First(x => x.nome.ToLower().Contains("nco")); // like '%nco%'
+        db.TrovaPercorso(
+            db.Nodi.First(x => x.nome == "Firenze"), // inizio
+            db.Nodi.First(x => x.nome == "Roma")     // fine
+        );
     }
 
 }

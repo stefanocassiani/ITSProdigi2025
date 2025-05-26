@@ -14,9 +14,9 @@ namespace Stradario.Strutture
             foreach(string riga in righe)
             {
                 string[] celle = riga.Split('\t');
-                int p1 = CreaNodo(celle[0]);
-                int p2 = CreaNodo(celle[1]);
-                int distanza = int.Parse(celle[2]);
+                uint p1 = CreaNodo(celle[0]);
+                uint p2 = CreaNodo(celle[1]);
+                uint distanza = uint.Parse(celle[2]);
                 if(!Archi.Any(arc => arc.A == p1 && arc.B == p2))
                     Archi.Add(new Arco() { A=p1, B=p2, Distanza=distanza });
                 if(!Archi.Any(arc => arc.A == p2 && arc.B == p1))
@@ -24,14 +24,14 @@ namespace Stradario.Strutture
             }
         }
 
-        public int CreaNodo(string nome)
+        public uint CreaNodo(string nome)
         {
             if(Nodi.Any(n => n.nome == nome))
             {
                 return Nodi.First(n => n.nome == nome).idNodo;
             } else
             {
-                int nuovoId = 1;
+                uint nuovoId = 1;
                 if(Nodi.Count > 0)
                 {
                     nuovoId = Nodi.Last().idNodo + 1;
