@@ -1,6 +1,34 @@
 ﻿@page "/login"
+@using WebChat.Dati
+@using WebChat.Dati.Strutture
+@inject BancaDati db
+
+@* vado a far si che lutente abbia la possibilita di dire si  sono io.
+ *@
+
 <h3>Login</h3>
 
-@code {
+<p>
+	<input placeholder="Email..." @bind="draft.Email"/>
+</p>
+<p>
+	<input placeholder="Password..." type="password" @bind="draft.Password" />
+</p>
 
+@code {
+	private Utente draft = new Utente();
+
+	private void Controllo() // vado a controllare se lutente è effettivamente chi dice di essere.
+	{//dato che il nostro straft è 0 come Id quando non è stato recuperato da banca dati. e diventa maggiore di 0 quando è portato fuori dal db. QUESTO LO VADO A SFRUTTARE PER MOSTRARE O MENO LA FINESTRA DI LOGIN
+		if (db.Utenti.Any(x => x.Email && x.Password == draft.Password))
+		{
+			draft = db.Utenti.First(){ }	
+		}
+	}
+
+	// //possiamo andare a usare un singleton, cosi da rendere Utente condivisa con tutte le schede cosi che se uno fa un login, errato troppe volte.
+	// avendolo spostato in un livello superiore, mantengo il tutto piu sicuro. perche non ce la possiiblita di aprire una nuova tab per riprovare ad accedere. e tenere lontano tentativi di brutefourse.
+	// 1 andarea  mettere il singleton in Program.cs
+	// 2 creare Utente e cambiare il tutto qui al posto di draft. 
+	// 3 posso anche andare a creare una classe Sessione.cs e metterelo un livello sopra. cosi da poter salvare tutta la sua anagrafica. 
 }
