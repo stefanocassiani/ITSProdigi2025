@@ -1,55 +1,71 @@
-﻿@page "/registrazione"
+﻿    @page "/registrazione"
 
-@using WebChat.Dati
-@using WebChat.Dati.Strutture
-@inject BancaDati db
+    @using WebChat.Dati
+    @using WebChat.Dati.Strutture
+    @inject BancaDati db
 
-<h3>Registrazione</h3>
+    <h3>Registrazione</h3>
 
-<p></p>
+    @if (!string.IsNullOrWhiteSpace(messaggio))
+    {
+        <p>@messaggio</p>
+    }
 
-<table class="table table-hover">
-    <tr>
-        <th>Nome</th>
-        <th class="text-end">Nome</th>
-        <th class="text-end">Email</th>
-        <th class="text-end">Password</th>
-        <th class="w-25 text-end"><div class="btn btn-success" @onclick="Nuovo">nuovo</div></th>
-    </tr>
-</table>
+    @if (draft == null)
+{
+    <p><button class="btn btn-success" @onclick="Nuovo">Nuovo</button></p>
+    }
+else
+{
+    <p><input placeholder="Nome" @bind="draft.Nome" /></p>
+    <p><input placeholder="Email" @bind="draft.Email" /></p>
+    <p><input placeholder="Password" type="password" @bind="draft.Password" /></p>
+    <p><button class="btn btn-primary" @onclick="Salva">Salva</button></p>
+    }
 
-@code {
-
+    @code {
     private Utente? draft;  //mi serve una bozza dove salvo le informazioni che lutente riempie. e mi servira per andare a bindare a draft. che essendo un utente..
     // avendo bindato il campo posso andare a vedere tutto cio che lutente scrive(posso accedere anche a ogni tasto che preme. ) , cancella o altro.
+
+    private string? messaggio;
 
     private void Nuovo()
     {
         draft = new Utente();
+        messaggio = null;
     }
 
     private void Salva()
     {
-        if (!db.Utenti.Contains(draft))
+        if (!db.Utenti.Any(u => u.Email == draft.Email))
         {
             db.Utenti.Add(draft);
+            db.SaveChanges();
+            messaggio = "Utente registrato con successo!";
         }
+        else
+        {
+            messaggio = "Email già registrata.";
+        }
+
         draft = null;
-        db.SaveChanges();
     }
+    }
+
+@* 
+
 
     //compito : fare registrazione e login. 
     //devo riuscire a riempire la tabella di sqlite.    
 
-    //1 costruire
+    //  1 costruire
     //	2. db che permette di dire, il tuo log-in è succed, o failed in base al DB
 
-    Svlogimento:
-    0 tieni presente che qui di usa  id per andare poi a fare un @bind  (facendo si che SignalR si occupi di tutto.)
-    1 comunica allutente cosa deve farE
-    2 i campi dove potra inserire l' informazione che ci serve
-    3 collegare con il bind.
+    // Svlogimento:
+    // 0 tieni presente che qui di usa  id per andare poi a fare un @bind  (facendo si che SignalR si occupi di tutto.)
+    // 1 comunica allutente cosa deve farE
+    // 2 i campi dove potra inserire l' informazione che ci serve
+    //3 collegare con il bind.
    // 4 una volta salvato vado a far draft = new Utente();    Per ANDARE   SVUOTARE  IL CAMPO  COSI CHE VENGA INVIATO DA SignalR
-   5 controlla che venga salvato nella SQL lite sotto la finestra DAti mi raccomando.
-
-}
+   //5 controlla che venga salvato nella SQL lite sotto la finestra DAti mi raccomando.
+ *@

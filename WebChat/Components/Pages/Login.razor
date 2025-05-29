@@ -20,9 +20,9 @@
 
 	private void Controllo() // vado a controllare se lutente è effettivamente chi dice di essere.
 	{//dato che il nostro straft è 0 come Id quando non è stato recuperato da banca dati. e diventa maggiore di 0 quando è portato fuori dal db. QUESTO LO VADO A SFRUTTARE PER MOSTRARE O MENO LA FINESTRA DI LOGIN
-		if (db.Utenti.Any(x => x.Email && x.Password == draft.Password))
+		if (db.Utenti.Any(x => x.Email == draft.Email && x.Password == draft.Password))
 		{
-			draft = db.Utenti.First(){ }	
+			draft = db.Utenti.First(x => x.Email == draft.Email && x.Password == draft.Password);
 		}
 	}
 
