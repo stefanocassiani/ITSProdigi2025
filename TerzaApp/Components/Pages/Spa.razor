@@ -1,130 +1,130 @@
-﻿@page "/spa"
-@using System.Text.Json
-@using TerzaApp.Dati.Strutture
-@inject TerzaApp.Dati.Archivio db
+﻿    @page "/spa"
+    @using System.Text.Json
+    @using TerzaApp.Dati.Strutture
+    @inject TerzaApp.Dati.Archivio db
 
-<Titolo titolo="Prodotti" OnRicerca="testo => ricerca = testo">
-    Usa <u>questa</u> pagina per gestire i tuoi prodotti!
-</Titolo>
+    <Titolo titolo="Prodotti" OnRicerca="testo => ricerca = testo">
+        Usa <u>questa</u> pagina per gestire i tuoi prodotti!
+    </Titolo>
 
-@if (stoInserendo)
-{
-    <div class="row g-2">
-        <div class="col-md-2">Nome</div>
-        <div class="col-md-10"><input class="form-control" @bind="bozza.Nome"/></div>
-        <div class="col-md-2">Prezzo</div>
-        <div class="col-md-2"><input class="form-control" type="number" @bind="bozza.Prezzo"/></div>
-        <div class="col-md-2">Categoria</div>
-        <div class="col-md-2">
-            <ListaLut elementi="db.categorie" PK="x => x.IdCategoria" valore="bozza.IdCategoria" OnSelect="i => bozza.IdCategoria = i" etichetta="categoria..." />
+    @if (stoInserendo)
+    {
+        <div class="row g-2">
+            <div class="col-md-2">Nome</div>
+            <div class="col-md-10"><input class="form-control" @bind="bozza.Nome"/></div>
+            <div class="col-md-2">Prezzo</div>
+            <div class="col-md-2"><input class="form-control" type="number" @bind="bozza.Prezzo"/></div>
+            <div class="col-md-2">Categoria</div>
+            <div class="col-md-2">
+                <ListaLut elementi="db.categorie" PK="x => x.IdCategoria" valore="bozza.IdCategoria" OnSelect="i => bozza.IdCategoria = i" etichetta="categoria..." />
+            </div>
+            <div class="col-md-2">Collezione</div>
+            <div class="col-md-2">
+                <ListaLut elementi="db.collezioni" PK="x => x.IdCollezione" valore="bozza.IdCollezione" OnSelect="i => bozza.IdCollezione = i" etichetta="collezione..." />
+            </div>
+
+            <div class="col-md-12">Descrizione</div>
+            <div class="col-md-12"><textarea class="form-control" @bind="bozza.Descrizione" /></div>
+            <div class="col-md-12 text-end">
+                <div class="btn btn-primary" @onclick="Salva">Salva</div>
+            </div>
         </div>
-        <div class="col-md-2">Collezione</div>
-        <div class="col-md-2">
-            <ListaLut elementi="db.collezioni" PK="x => x.IdCollezione" valore="bozza.IdCollezione" OnSelect="i => bozza.IdCollezione = i" etichetta="collezione..." />
-        </div>
+    } else
+    {
 
-        <div class="col-md-12">Descrizione</div>
-        <div class="col-md-12"><textarea class="form-control" @bind="bozza.Descrizione" /></div>
-        <div class="col-md-12 text-end">
-            <div class="btn btn-primary" @onclick="Salva">Salva</div>
-        </div>
-    </div>
-} else
-{
-
-    <div class="table-responsive">
-        <table class="table table-sm table-hover">
-            <thead>
-                <tr>
-                    <th>Categoria</th>
-                    <th>Collezione</th>
-                    <th>Nome</th>
-                    <th>Descrizione</th>
-                    <th class="text-end">Prezzo</th>
-                    <th width="1%"></th>
-                    <th width="1%" class="text-end">
-                        <div class="btn btn-sm btn-success" @onclick="e => stoInserendo = true">nuovo</div>
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (Prodotto singolo in db.prodotti)
-                {
-                    if (singolo.Nome.Contains(ricerca) || singolo.Descrizione.Contains(ricerca))
+        <div class="table-responsive">
+            <table class="table table-sm table-hover">
+                <thead>
+                    <tr>
+                        <th>Categoria</th>
+                        <th>Collezione</th>
+                        <th>Nome</th>
+                        <th>Descrizione</th>
+                        <th class="text-end">Prezzo</th>
+                        <th width="1%"></th>
+                        <th width="1%" class="text-end">
+                            <div class="btn btn-sm btn-success" @onclick="e => stoInserendo = true">nuovo</div>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (Prodotto singolo in db.prodotti)
                     {
-                        <tr>
-                            <td>@db.categorie.FirstOrDefault( x => x.IdCategoria == singolo.IdCategoria )</td>
-                            <td>@db.collezioni.FirstOrDefault( x => x.IdCollezione == singolo.IdCollezione )</td>
-                            <td>@singolo.Nome</td>
-                            <td>@singolo.Descrizione</td>
-                            <td class="text-end">@singolo.Currency</td>
-                            <td class="text-end">
-                                <div class="btn btn-sm btn-warning" @onclick="e => Modifica(singolo)">modifica</div>
-                            </td>
-                            <td class="text-end">
-                                <div class="btn btn-sm btn-danger" @onclick="e => Cancella(singolo) ">cancella</div>
-                            </td>
-                        </tr>
+                        if (singolo.Nome.Contains(ricerca) || singolo.Descrizione.Contains(ricerca))
+                        {
+                            <tr>
+                                <td>@db.categorie.FirstOrDefault( x => x.IdCategoria == singolo.IdCategoria )</td>
+                                <td>@db.collezioni.FirstOrDefault( x => x.IdCollezione == singolo.IdCollezione )</td>
+                                <td>@singolo.Nome</td>
+                                <td>@singolo.Descrizione</td>
+                                <td class="text-end">@singolo.Currency</td>
+                                <td class="text-end">
+                                    <div class="btn btn-sm btn-warning" @onclick="e => Modifica(singolo)">modifica</div>
+                                </td>
+                                <td class="text-end">
+                                    <div class="btn btn-sm btn-danger" @onclick="e => Cancella(singolo) ">cancella</div>
+                                </td>
+                            </tr>
+                        }
                     }
-                }
-            </tbody>
-        </table>
-    </div>
-}
-
-
-
-@code {
-    string ricerca = "";
-    Prodotto bozza = new Prodotto();
-
-    bool stoInserendo = false;
-
-    protected override void OnInitialized()
-    {
-        // controllo se esiste un archivio dei prodotti
-
-        base.OnInitialized();
+                </tbody>
+            </table>
+        </div>
     }
 
-    void CategoriaModificata(ChangeEventArgs evento)
-    {
-        bozza.IdCategoria = int.Parse(evento.Value.ToString());
-    }
 
-    void CollezioneModificata(ChangeEventArgs evento)
-    {
-        bozza.IdCollezione = int.Parse(evento.Value.ToString());
-    }
 
-    void Modifica(Prodotto selezionato)
-    {
-        bozza = selezionato;
-        stoInserendo = true;
-    }
+    @code {
+        string ricerca = "";
+        Prodotto bozza = new Prodotto();
 
-    void Cancella(Prodotto selezionato)
-    {
-        db.prodotti.Remove(selezionato);
-        db.Salva();
-    }
+        bool stoInserendo = false;
 
-    void Salva()
-    {
-        // se non esiste di già
-        if (!db.prodotti.Contains(bozza))
+        protected override void OnInitialized()
         {
-            // lo inserisco
-            db.AddProdotto(bozza);
+            // controllo se esiste un archivio dei prodotti
+
+            base.OnInitialized();
         }
 
-        // poi salvo
-        db.Salva();
+        void CategoriaModificata(ChangeEventArgs evento)
+        {
+            bozza.IdCategoria = int.Parse(evento.Value.ToString());
+        }
+
+        void CollezioneModificata(ChangeEventArgs evento)
+        {
+            bozza.IdCollezione = int.Parse(evento.Value.ToString());
+        }
+
+        void Modifica(Prodotto selezionato)
+        {
+            bozza = selezionato;
+            stoInserendo = true;
+        }
+
+        void Cancella(Prodotto selezionato)
+        {
+            db.prodotti.Remove(selezionato);
+            db.Salva();
+        }
+
+        void Salva()
+        {
+            // se non esiste di già
+            if (!db.prodotti.Contains(bozza))
+            {
+                // lo inserisco
+                db.AddProdotto(bozza);
+            }
+
+            // poi salvo
+            db.Salva();
         
-        // e resetto il draft su cui lavora l'utente
-        bozza = new Prodotto();
+            // e resetto il draft su cui lavora l'utente
+            bozza = new Prodotto();
         
-        // chiudo alla fine la fiestra
-        stoInserendo = false;
+            // chiudo alla fine la fiestra
+            stoInserendo = false;
+        }
     }
-}
