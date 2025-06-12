@@ -25,6 +25,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClipVisionWinForm", "ClipVi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CRM2", "CRM2\CRM2.csproj", "{449621D1-4EE7-4BCD-86C1-5E5A8F70E8AB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CRM3", "CRM3\CRM3.csproj", "{8B490764-785F-4C0A-8258-EA7ACAF9D804}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -75,6 +77,10 @@ Global
 		{449621D1-4EE7-4BCD-86C1-5E5A8F70E8AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{449621D1-4EE7-4BCD-86C1-5E5A8F70E8AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{449621D1-4EE7-4BCD-86C1-5E5A8F70E8AB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8B490764-785F-4C0A-8258-EA7ACAF9D804}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8B490764-785F-4C0A-8258-EA7ACAF9D804}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8B490764-785F-4C0A-8258-EA7ACAF9D804}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8B490764-785F-4C0A-8258-EA7ACAF9D804}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
