@@ -15,6 +15,6 @@ namespace CRM.Strutture
         public int IdMessaggio { get; set; }
         public Contatto Da { get; set; }
         public Contatto A { get; set; }
-        public string Testo { get; set; } = string.Empty;
+        public string Testo { get; set; } =  string.Empty;
     }
 }

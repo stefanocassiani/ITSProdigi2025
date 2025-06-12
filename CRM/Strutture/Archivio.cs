@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace CRM.Strutture
 {
-    public class Database1 : DbContext
+    public class Archivio : DbContext
     {
         public DbSet<Progetto> Progetti { get; set; }
         public DbSet<Contatto> Contatti { get; set; }
@@ -19,6 +19,5 @@ namespace CRM.Strutture
             optionsBuilder.UseSqlite("Data Source=archivio.sqlite");
             base.OnConfiguring(optionsBuilder);
         }
-        
     }
 }
