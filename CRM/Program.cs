@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 using CRM.Strutture;
 
 namespace CRM
@@ -27,3 +28,7 @@ namespace CRM
         }
     }
 }
+=======
+﻿// See https://aka.ms/new-console-template for more information
+Console.WriteLine("Hello, World!");
+>>>>>>> f4444b0615e9aedc4414dd1a6ee7d4e8953989d4

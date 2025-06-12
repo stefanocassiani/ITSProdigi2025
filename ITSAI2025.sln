@@ -13,6 +13,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Stradario", "Stradario\Stra
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebChat", "WebChat\WebChat.csproj", "{B2126612-01A8-4207-9036-778D01A60767}"
 EndProject
+<<<<<<< HEAD
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ComputerVision1", "ComputerVision1\ComputerVision1.csproj", "{5C44250E-5DDB-474A-8719-9732FC3FDDE5}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ComputerVision2Prova", "computerVision2\ComputerVision2Prova.csproj", "{2122D3D2-1068-4CEE-BCBE-E114C1245D7B}"
@@ -24,6 +25,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClipVisionWinForm", "ClipVisionWinForm\ClipVisionWinForm.csproj", "{A7528AE9-1230-4B4A-A1B8-428013BD6673}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CRM2", "CRM2\CRM2.csproj", "{449621D1-4EE7-4BCD-86C1-5E5A8F70E8AB}"
+=======
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BloccoNoteTest", "BloccoNoteTest\BloccoNoteTest.csproj", "{39C6C183-F395-4268-B065-E39385F1036C}"
+>>>>>>> f4444b0615e9aedc4414dd1a6ee7d4e8953989d4
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -51,6 +55,7 @@ Global
 		{B2126612-01A8-4207-9036-778D01A60767}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B2126612-01A8-4207-9036-778D01A60767}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B2126612-01A8-4207-9036-778D01A60767}.Release|Any CPU.Build.0 = Release|Any CPU
+<<<<<<< HEAD
 		{5C44250E-5DDB-474A-8719-9732FC3FDDE5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{5C44250E-5DDB-474A-8719-9732FC3FDDE5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5C44250E-5DDB-474A-8719-9732FC3FDDE5}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -75,6 +80,12 @@ Global
 		{449621D1-4EE7-4BCD-86C1-5E5A8F70E8AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{449621D1-4EE7-4BCD-86C1-5E5A8F70E8AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{449621D1-4EE7-4BCD-86C1-5E5A8F70E8AB}.Release|Any CPU.Build.0 = Release|Any CPU
+=======
+		{39C6C183-F395-4268-B065-E39385F1036C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{39C6C183-F395-4268-B065-E39385F1036C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{39C6C183-F395-4268-B065-E39385F1036C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{39C6C183-F395-4268-B065-E39385F1036C}.Release|Any CPU.Build.0 = Release|Any CPU
+>>>>>>> f4444b0615e9aedc4414dd1a6ee7d4e8953989d4
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
